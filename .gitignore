@@ -1,0 +1,19 @@
+.libs/
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+build-aux/
+config.*
+configure
+libtool
+m4/
+*.la
+*.lo
+*.o
+*.deps
+*.dirstamp
+stamp-*
+
+# Test binary until we have the main solus.so
+/dummy-test
