@@ -9,13 +9,25 @@
  * (at your option) any later version.
  */
 
+#include "config.h"
+#include "engine-api.h"
 #include "util.h"
 
-/**
- * Current placeholder while we develop everything else..
- */
-__sol_public__ void unused_entry(void)
+__sol_public__ gboolean theme_check_init(__sol_unused__ unsigned int major,
+                                         __sol_unused__ unsigned int minor,
+                                         __sol_unused__ unsigned int micro)
 {
+        /* Cowardly refuse to load */
+        return FALSE;
+}
+
+__sol_public__ void get_theme_info(char **theme_name, char **theme_ver, char **author,
+                                   char **homepage)
+{
+        *theme_name = g_strdup("Solus Theme");
+        *theme_ver = g_strdup(PACKAGE_VERSION);
+        *author = g_strdup("Ikey Doherty");
+        *homepage = g_strdup(PACKAGE_URL);
 }
 
 /*

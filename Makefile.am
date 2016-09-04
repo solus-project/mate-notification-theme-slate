@@ -18,7 +18,8 @@ AM_CFLAGS = \
 engine_LTLIBRARIES = libsolus.la
 enginedir = $(libdir)/mate-notification-daemon/engines
 
-libsolus_la_SOURCES = \
+libsolus_la_SOURCES = 		\
+	src/engine-api.h	\
 	src/engine.c
 
 libsolus_la_CFLAGS = \
@@ -36,8 +37,8 @@ libsolus_la_LDFLAGS = 	\
 # Just for our own testing right now, no lib
 noinst_PROGRAMS = dummy-test
 
-dummy_test_SOURCES = \
-	src/util.h		 \
+dummy_test_SOURCES = 	\
+	src/util.h	\
 	src/main.c
 
 dummy_test_CFLAGS = \
