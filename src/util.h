@@ -1,8 +1,8 @@
 /*
  * This file is part of mate-notification-theme-solus
- * 
+ *
  * Copyright © 2016 Ikey Doherty <ikey@solus-project.com>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -21,7 +21,6 @@
  * Helpful in development to suppress compiler warnings for known-unused vars
  */
 #define __sol_unused__ __attribute__((unused))
-
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
