@@ -15,6 +15,24 @@ AM_CFLAGS = \
 	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11
 
 
+engine_LTLIBRARIES = libsolus.la
+enginedir = $(libdir)/mate-notification-daemon/engines
+
+libsolus_la_SOURCES = \
+	src/engine.c
+
+libsolus_la_CFLAGS = \
+	$(AM_CFLAGS)	 \
+	$(THEME_CFLAGS)
+
+libsolus_la_LIBADD = \
+	$(THEME_LIBS)
+
+libsolus_la_LDFLAGS = 	\
+	-module 		 	\
+	-avoid-version	 	\
+	-fvisibility=hidden
+
 # Just for our own testing right now, no lib
 noinst_PROGRAMS = dummy-test
 
@@ -27,4 +45,6 @@ dummy_test_CFLAGS = \
 	$(THEME_CFLAGS)
 
 dummy_test_LDADD = \
-	$(THEME_LIBS)
+	$(THEME_LIBS)  \
+	libsolus.la
+
