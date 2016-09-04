@@ -19,6 +19,7 @@ AM_CFLAGS = \
 noinst_PROGRAMS = dummy-test
 
 dummy_test_SOURCES = \
+	src/util.h		 \
 	src/main.c
 
 dummy_test_CFLAGS = \

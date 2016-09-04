@@ -9,14 +9,19 @@
  * (at your option) any later version.
  */
 
-#include <stdlib.h>
+#pragma once
 
-#include "util.h"
+/**
+ * All symbols are hidden by default so must be explicitly be made public
+ * to define the ABI
+ */
+#define __sol_public__ __attribute__((visibility("default")))
 
-int main(__sol_unused__ int argc, __sol_unused__ char **argv)
-{
-        return EXIT_FAILURE;
-}
+/**
+ * Helpful in development to suppress compiler warnings for known-unused vars
+ */
+#define __sol_unused__ __attribute__((unused))
+
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
