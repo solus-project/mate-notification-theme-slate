@@ -13,11 +13,13 @@
 #include "engine-api.h"
 #include "util.h"
 
-__sol_public__ gboolean theme_check_init(__sol_unused__ unsigned int major,
-                                         __sol_unused__ unsigned int minor,
+__sol_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
                                          __sol_unused__ unsigned int micro)
 {
-        /* Cowardly refuse to load */
+        /* Micro version may change with devel builds so don't test it */
+        if (major == MATE_NOTIFYD_MAJOR_VERSION && minor == MATE_NOTIFYD_MINOR_VERSION) {
+                return TRUE;
+        }
         return FALSE;
 }
 

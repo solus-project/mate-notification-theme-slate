@@ -13,6 +13,9 @@
 
 #include "util.h"
 
+#define MATE_NOTIFYD_MAJOR_VERSION 1
+#define MATE_NOTIFYD_MINOR_VERSION 3
+
 typedef void (*UrlClickedCb)(GtkWindow *notif_window, const char *url);
 
 /**
