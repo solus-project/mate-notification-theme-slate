@@ -17,6 +17,40 @@ SOLUS_BEGIN_INCLUDES
 #include "notification-window.h"
 SOLUS_END_INCLUDES
 
+#include <stdbool.h>
+
+/**
+ * We load and unload this to ensure we cause no problems to other plugins
+ */
+static GtkStyleContext *_theme_style_context = NULL;
+
+/**
+ * Load our theme assets into the global style context provider
+ */
+static bool sol_theme_load(void)
+{
+        /* Currently No-op */
+        return true;
+}
+
+/**
+ * Unload the theme from the global style context provider
+ */
+static void sol_theme_unload(void)
+{
+        GdkScreen *screen = NULL;
+
+        /* Currently no-op */
+        if (!_theme_style_context) {
+                return;
+        }
+
+        screen = gdk_screen_get_default();
+        gtk_style_context_remove_provider_for_screen(screen,
+                                                     GTK_STYLE_PROVIDER(_theme_style_context));
+        _theme_style_context = NULL;
+}
+
 __solus_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
                                            __solus_unused__ unsigned int micro)
 {
@@ -63,6 +97,22 @@ __solus_public__ void hide_notification(GtkWindow *notif_window)
                 return;
         }
         gtk_widget_hide(GTK_WIDGET(notif_window));
+}
+
+/**
+ * Hooks for GModule initialisation
+ */
+__solus_public__ const gchar *g_module_check_init(__solus_unused__ GModule *module)
+{
+        if (!sol_theme_load()) {
+                return "Failed to load theme resources";
+        }
+        return NULL;
+}
+
+__solus_public__ void g_module_unload(__solus_unused__ GModule *module)
+{
+        sol_theme_unload();
 }
 
 /*
