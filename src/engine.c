@@ -28,7 +28,7 @@ static GtkStyleContext *_theme_style_context = NULL;
 /**
  * Load our theme assets into the global style context provider
  */
-static bool sol_theme_load(void)
+__attribute__((constructor)) static bool sol_theme_load(void)
 {
         /* Load our resources in */
         sol_resource_register_resource();
@@ -38,7 +38,7 @@ static bool sol_theme_load(void)
 /**
  * Unload the theme from the global style context provider
  */
-static void sol_theme_unload(void)
+__attribute__((destructor)) static void sol_theme_unload(void)
 {
         GdkScreen *screen = NULL;
 
