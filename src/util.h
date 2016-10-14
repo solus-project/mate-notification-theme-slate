@@ -17,7 +17,7 @@
 
 /**
  * With newer GCC versions, we see compiler warnings simply from including any glib/gtk header.
- * Many of these make it very hard to debug genuine compiler warnings for Budgie itself, which
+ * Many of these make it very hard to debug genuine compiler warnings for the project itself, which
  * ideally should be completely clear.
  *
  * This provides a quick useful macro to wrap around the inclusion of GTK/GLib header files
