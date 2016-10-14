@@ -15,21 +15,21 @@ AM_CFLAGS = \
 	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11
 
 
-engine_LTLIBRARIES = libsolus.la
+engine_LTLIBRARIES = libsolus-mate-theme.la
 enginedir = $(libdir)/mate-notification-daemon/engines
 
-libsolus_la_SOURCES = 		\
+libsolus_mate_theme_la_SOURCES = 		\
 	src/engine-api.h	\
 	src/engine.c
 
-libsolus_la_CFLAGS = \
+libsolus_mate_theme_la_CFLAGS = \
 	$(AM_CFLAGS)	 \
 	$(THEME_CFLAGS)
 
-libsolus_la_LIBADD = \
+libsolus_mate_theme_la_LIBADD = \
 	$(THEME_LIBS)
 
-libsolus_la_LDFLAGS = 	\
+libsolus_mate_theme_la_LDFLAGS = 	\
 	-module 		 	\
 	-avoid-version	 	\
 	-fvisibility=hidden
@@ -47,5 +47,5 @@ dummy_test_CFLAGS = \
 
 dummy_test_LDADD = \
 	$(THEME_LIBS)  \
-	libsolus.la
+	libsolus-mate-theme.la
 
