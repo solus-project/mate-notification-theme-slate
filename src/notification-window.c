@@ -30,7 +30,7 @@ G_DEFINE_TYPE_WITH_PRIVATE(SolNotificationWindow, sol_notification_window, GTK_T
  */
 GtkWidget *sol_notification_window_new()
 {
-        return g_object_new(SOL_TYPE_NOTIFICATION_WINDOW, NULL);
+        return g_object_new(SOL_TYPE_NOTIFICATION_WINDOW, "type", GTK_WINDOW_POPUP, NULL);
 }
 
 /**
