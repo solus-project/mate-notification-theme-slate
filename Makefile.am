@@ -41,7 +41,9 @@ libsolus_mate_theme_assets_la_SOURCES = \
 	theme-resources.c
 
 libsolus_mate_theme_assets_la_CFLAGS = \
-	$(THEME_CFLAGS)
+	$(AM_CFLAGS)	 \
+	$(THEME_CFLAGS)	\
+	-Wno-pedantic
 
 libsolus_mate_theme_assets_la_LIBADD = \
 	$(THEME_LIBS)
