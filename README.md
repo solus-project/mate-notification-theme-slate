@@ -10,4 +10,4 @@ License
 
 Copyright © 2016 Ikey Doherty <ikey@solus-project.com>, Solus Project
 
-mate-notification-theme-solus is available under the terms of the `GPL-2.0` license
+mate-notification-theme-solus is available under the terms of the `LGPL-2.1` license
