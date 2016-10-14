@@ -21,7 +21,7 @@ struct _SolNotificationWindowPrivate {
         int __reserved1;
 };
 
-G_DEFINE_TYPE_WITH_PRIVATE(SolNotificationWindow, sol_notification_window, GTK_TYPE_DRAWING_AREA)
+G_DEFINE_TYPE_WITH_PRIVATE(SolNotificationWindow, sol_notification_window, GTK_TYPE_WINDOW)
 
 /**
  * sol_notification_window_new:
