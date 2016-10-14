@@ -13,7 +13,7 @@
 
 #include "util.h"
 
-int main(__sol_unused__ int argc, __sol_unused__ char **argv)
+int main(__solus_unused__ int argc, __solus_unused__ char **argv)
 {
         return EXIT_FAILURE;
 }

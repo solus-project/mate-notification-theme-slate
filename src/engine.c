@@ -10,11 +10,14 @@
  */
 
 #include "config.h"
-#include "engine-api.h"
 #include "util.h"
 
-__sol_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
-                                         __sol_unused__ unsigned int micro)
+SOLUS_BEGIN_INCLUDES
+#include "engine-api.h"
+SOLUS_END_INCLUDES
+
+__solus_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
+                                           __solus_unused__ unsigned int micro)
 {
         /* Micro version may change with devel builds so don't test it */
         if (major == MATE_NOTIFYD_MAJOR_VERSION && minor == MATE_NOTIFYD_MINOR_VERSION) {
@@ -23,8 +26,8 @@ __sol_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
         return FALSE;
 }
 
-__sol_public__ void get_theme_info(char **theme_name, char **theme_ver, char **author,
-                                   char **homepage)
+__solus_public__ void get_theme_info(char **theme_name, char **theme_ver, char **author,
+                                     char **homepage)
 {
         *theme_name = g_strdup("Solus Theme");
         *theme_ver = g_strdup(PACKAGE_VERSION);
