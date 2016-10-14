@@ -53,8 +53,8 @@ __attribute__((destructor)) static void sol_theme_unload(void)
                                                      GTK_STYLE_PROVIDER(_theme_style_context));
         _theme_style_context = NULL;
 
-        /* Ensure to unload resources */
 resource_unload:
+        /* Ensure to unload resources */
         sol_resource_unregister_resource();
 }
 
