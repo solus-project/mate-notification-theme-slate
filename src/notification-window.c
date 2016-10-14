@@ -41,15 +41,27 @@ static void sol_notification_window_dispose(__solus_unused__ GObject *obj)
         /* skip for now */
 }
 
+static void close_clicked(SolNotificationWindow *self, gpointer userdata)
+{
+        /* TODO: REMOVE!!! */
+        gtk_main_quit();
+}
+
 /**
  * Class initialisation
  */
 static void sol_notification_window_class_init(SolNotificationWindowClass *klazz)
 {
         GObjectClass *obj_class = G_OBJECT_CLASS(klazz);
+        GtkWidgetClass *wid_class = GTK_WIDGET_CLASS(klazz);
 
         /* gobject vtable hookup */
         obj_class->dispose = sol_notification_window_dispose;
+
+        /* GtkTemplate */
+        gtk_widget_class_set_template_from_resource(
+            wid_class, "/com/solus-project/mate-notification-daemon-theme-solus/notification.ui");
+        gtk_widget_class_bind_template_callback(wid_class, close_clicked);
 }
 
 /**
@@ -58,6 +70,8 @@ static void sol_notification_window_class_init(SolNotificationWindowClass *klazz
 static void sol_notification_window_init(SolNotificationWindow *self)
 {
         self->priv = sol_notification_window_get_instance_private(self);
+        /* Go build the UI */
+        gtk_widget_init_template(GTK_WIDGET(self));
 }
 
 /*
