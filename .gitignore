@@ -17,3 +17,10 @@ stamp-*
 
 # Test binary until we have the main solus.so
 /dummy-test
+
+# Theme resources
+/theme-resources.c
+/theme-resources.h
+
+# Glade deposits these around the place..
+*.ui~

@@ -1,10 +1,28 @@
 ACLOCAL_AMFLAGS = -I m4
 
-EXTRA_DIST = ${top_srcdir}/README.md \
-			 ${top_srcdir}/LICENSE
+EXTRA_DIST = \
+	${top_srcdir}/README.md \
+	${top_srcdir}/LICENSE \
+	${top_srcdir}/src/theme.gresource.xml \
+	${top_srcdir}/src/notification.ui
 
 NULL =
-CLEANFILES =
+
+theme_resources = $(shell glib-compile-resources --sourcedir=$(top_srcdir)/src --generate-dependencies $(top_srcdir)/src/theme.gresource.xml)
+
+BUILT_SOURCES = \
+	theme-resources.h \
+	theme-resources.c
+
+CLEANFILES = \
+	$(BUILT_SOURCES)
+
+# resources
+theme-resources.h: $(top_srcdir)/src/theme.gresource.xml $(theme_resources)
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --generate-header --c-name sol_resource $<
+
+theme-resources.c: $(top_srcdir)/src/theme.gresource.xml $(theme_resources)
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --generate-source --c-name sol_resource $<
 
 AM_CFLAGS = \
 	-fstack-protector -Wall -pedantic \
@@ -19,6 +37,8 @@ engine_LTLIBRARIES = libsolus-mate-theme.la
 enginedir = $(libdir)/mate-notification-daemon/engines
 
 libsolus_mate_theme_la_SOURCES =	\
+	theme-resources.h		\
+	theme-resources.c		\
 	src/engine-api.h		\
 	src/engine.c			\
 	src/notification-window.h	\

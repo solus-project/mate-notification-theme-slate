@@ -20,6 +20,8 @@ PKG_CHECK_MODULES(THEME,
         ]
 )
 
+AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
+
 AC_OUTPUT
 
 AC_MSG_RESULT([
