@@ -13,8 +13,26 @@
 
 #include "util.h"
 
-int main(__solus_unused__ int argc, __solus_unused__ char **argv)
+SOLUS_BEGIN_INCLUDES
+#include "engine-api.h"
+SOLUS_END_INCLUDES
+
+int main(int argc, char **argv)
 {
+        gtk_init(&argc, &argv);
+        GtkWindow *window = NULL;
+
+        if (!theme_check_init(MATE_NOTIFYD_MAJOR_VERSION, MATE_NOTIFYD_MINOR_VERSION, 0)) {
+                fprintf(stderr, "Failed to initialise theme engine\n");
+                return EXIT_FAILURE;
+        }
+
+        window = create_notification(NULL);
+
+        gtk_main();
+
+        destroy_notification(window);
+
         return EXIT_FAILURE;
 }
 

@@ -14,6 +14,7 @@
 
 SOLUS_BEGIN_INCLUDES
 #include "engine-api.h"
+#include "notification-window.h"
 SOLUS_END_INCLUDES
 
 __solus_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
@@ -33,6 +34,19 @@ __solus_public__ void get_theme_info(char **theme_name, char **theme_ver, char *
         *theme_ver = g_strdup(PACKAGE_VERSION);
         *author = g_strdup("Ikey Doherty");
         *homepage = g_strdup(PACKAGE_URL);
+}
+
+__solus_public__ GtkWindow *create_notification(__solus_unused__ UrlClickedCb cb)
+{
+        return GTK_WINDOW(sol_notification_window_new());
+}
+
+__solus_public__ void destroy_notification(GtkWindow *notif_window)
+{
+        if (!notif_window) {
+                return;
+        }
+        gtk_widget_destroy(GTK_WIDGET(notif_window));
 }
 
 /*
