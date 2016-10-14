@@ -72,6 +72,12 @@ static void sol_notification_window_init(SolNotificationWindow *self)
         self->priv = sol_notification_window_get_instance_private(self);
         /* Go build the UI */
         gtk_widget_init_template(GTK_WIDGET(self));
+
+        /* Play nice with the window manager */
+        gtk_window_set_resizable(GTK_WINDOW(self), FALSE);
+        gtk_window_set_skip_pager_hint(GTK_WINDOW(self), TRUE);
+        gtk_window_set_skip_taskbar_hint(GTK_WINDOW(self), TRUE);
+        gtk_window_set_decorated(GTK_WINDOW(self), FALSE);
 }
 
 /*
