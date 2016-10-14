@@ -18,9 +18,11 @@ AM_CFLAGS = \
 engine_LTLIBRARIES = libsolus-mate-theme.la
 enginedir = $(libdir)/mate-notification-daemon/engines
 
-libsolus_mate_theme_la_SOURCES = 		\
-	src/engine-api.h	\
-	src/engine.c
+libsolus_mate_theme_la_SOURCES =	\
+	src/engine-api.h		\
+	src/engine.c			\
+	src/notification-window.h	\
+	src/notification-window.c
 
 libsolus_mate_theme_la_CFLAGS = \
 	$(AM_CFLAGS)	 \
