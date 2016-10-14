@@ -15,6 +15,7 @@
 SOLUS_BEGIN_INCLUDES
 #include "engine-api.h"
 #include "notification-window.h"
+#include "theme-resources.h"
 SOLUS_END_INCLUDES
 
 #include <stdbool.h>
@@ -29,7 +30,8 @@ static GtkStyleContext *_theme_style_context = NULL;
  */
 static bool sol_theme_load(void)
 {
-        /* Currently No-op */
+        /* Load our resources in */
+        sol_resource_register_resource();
         return true;
 }
 
@@ -42,6 +44,7 @@ static void sol_theme_unload(void)
 
         /* Currently no-op */
         if (!_theme_style_context) {
+                goto resource_unload;
                 return;
         }
 
@@ -49,6 +52,10 @@ static void sol_theme_unload(void)
         gtk_style_context_remove_provider_for_screen(screen,
                                                      GTK_STYLE_PROVIDER(_theme_style_context));
         _theme_style_context = NULL;
+
+        /* Ensure to unload resources */
+resource_unload:
+        sol_resource_unregister_resource();
 }
 
 __solus_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,

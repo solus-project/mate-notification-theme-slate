@@ -19,10 +19,10 @@ CLEANFILES = \
 
 # resources
 theme-resources.h: $(top_srcdir)/src/theme.gresource.xml $(theme_resources)
-	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --generate-header --c-name sol_resource $<
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --manual-register --generate-header --c-name sol_resource $<
 
 theme-resources.c: $(top_srcdir)/src/theme.gresource.xml $(theme_resources)
-	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --generate-source --c-name sol_resource $<
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --manual-register --generate-source --c-name sol_resource $<
 
 AM_CFLAGS = \
 	-fstack-protector -Wall -pedantic \
