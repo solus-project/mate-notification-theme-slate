@@ -33,12 +33,24 @@ AM_CFLAGS = \
 	-Wall -W -D_FORTIFY_SOURCE=2 -std=c11
 
 
+# Mainly to avoid compiler warnings.
+noinst_LTLIBRARIES = libsolus-mate-theme-assets.la
+
+libsolus_mate_theme_assets_la_SOURCES = \
+	theme-resources.h		\
+	theme-resources.c
+
+libsolus_mate_theme_assets_la_CFLAGS = \
+	$(THEME_CFLAGS)
+
+libsolus_mate_theme_assets_la_LIBADD = \
+	$(THEME_LIBS)
+
+# Main engine
 engine_LTLIBRARIES = libsolus-mate-theme.la
 enginedir = $(libdir)/mate-notification-daemon/engines
 
 libsolus_mate_theme_la_SOURCES =	\
-	theme-resources.h		\
-	theme-resources.c		\
 	src/engine-api.h		\
 	src/engine.c			\
 	src/notification-window.h	\
@@ -49,6 +61,7 @@ libsolus_mate_theme_la_CFLAGS = \
 	$(THEME_CFLAGS)
 
 libsolus_mate_theme_la_LIBADD = \
+	libsolus-mate-theme-assets.la \
 	$(THEME_LIBS)
 
 libsolus_mate_theme_la_LDFLAGS = 	\
