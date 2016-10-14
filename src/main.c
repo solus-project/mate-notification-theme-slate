@@ -28,6 +28,7 @@ int main(int argc, char **argv)
         }
 
         window = create_notification(NULL);
+        show_notification(window);
 
         gtk_main();
 

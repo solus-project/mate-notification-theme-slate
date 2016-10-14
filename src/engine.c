@@ -49,6 +49,22 @@ __solus_public__ void destroy_notification(GtkWindow *notif_window)
         gtk_widget_destroy(GTK_WIDGET(notif_window));
 }
 
+__solus_public__ void show_notification(GtkWindow *notif_window)
+{
+        if (!notif_window) {
+                return;
+        }
+        gtk_widget_show(GTK_WIDGET(notif_window));
+}
+
+__solus_public__ void hide_notification(GtkWindow *notif_window)
+{
+        if (!notif_window) {
+                return;
+        }
+        gtk_widget_hide(GTK_WIDGET(notif_window));
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *
