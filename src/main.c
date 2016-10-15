@@ -37,7 +37,7 @@ int main(int argc, char **argv)
         screen = gdk_screen_get_default();
         primary_monitor = gdk_screen_get_primary_monitor(screen);
         gdk_screen_get_monitor_geometry(screen, primary_monitor, &rect);
-        move_notification(window, (rect.x + (rect.width - 400) - 10), rect.y + 10);
+        move_notification(window, (rect.x + (rect.width - 400) - 10), rect.y + 40);
 
         show_notification(window);
 
