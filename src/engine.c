@@ -97,7 +97,6 @@ __attribute__((destructor)) static void sol_theme_unload(void)
         /* Currently no-op */
         if (!_theme_style_provider) {
                 goto resource_unload;
-                return;
         }
 
         screen = gdk_screen_get_default();
