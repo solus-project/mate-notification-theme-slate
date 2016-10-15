@@ -21,6 +21,11 @@ struct _SolNotificationWindowPrivate {
         int __reserved1;
 };
 
+/**
+ * Default notification width
+ */
+#define NOTIFICATION_SIZE 400
+
 G_DEFINE_TYPE_WITH_PRIVATE(SolNotificationWindow, sol_notification_window, GTK_TYPE_WINDOW)
 
 /**
@@ -49,6 +54,21 @@ static void close_clicked(__solus_unused__ SolNotificationWindow *self,
 }
 
 /**
+ * Override the width requests to a fixed size
+ */
+static void sol_notification_window_get_preferred_width(__solus_unused__ GtkWidget *widget,
+                                                        gint *min, gint *nat)
+{
+        *min = *nat = NOTIFICATION_SIZE;
+}
+
+static void sol_notification_window_get_preferred_width_for_height(
+    __solus_unused__ GtkWidget *widget, __solus_unused__ gint h, gint *min, gint *nat)
+{
+        *min = *nat = NOTIFICATION_SIZE;
+}
+
+/**
  * Class initialisation
  */
 static void sol_notification_window_class_init(SolNotificationWindowClass *klazz)
@@ -58,6 +78,11 @@ static void sol_notification_window_class_init(SolNotificationWindowClass *klazz
 
         /* gobject vtable hookup */
         obj_class->dispose = sol_notification_window_dispose;
+
+        /* widget vtable */
+        wid_class->get_preferred_width = sol_notification_window_get_preferred_width;
+        wid_class->get_preferred_width_for_height =
+            sol_notification_window_get_preferred_width_for_height;
 
         /* GtkTemplate */
         gtk_widget_class_set_template_from_resource(
@@ -79,6 +104,7 @@ static void sol_notification_window_init(SolNotificationWindow *self)
         gtk_window_set_skip_pager_hint(GTK_WINDOW(self), TRUE);
         gtk_window_set_skip_taskbar_hint(GTK_WINDOW(self), TRUE);
         gtk_window_set_decorated(GTK_WINDOW(self), FALSE);
+        gtk_window_set_default_size(GTK_WINDOW(self), NOTIFICATION_SIZE, -1);
 }
 
 /*
