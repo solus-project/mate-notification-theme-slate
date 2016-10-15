@@ -21,13 +21,24 @@ int main(int argc, char **argv)
 {
         gtk_init(&argc, &argv);
         GtkWindow *window = NULL;
+        GdkScreen *screen = NULL;
+        GdkRectangle rect = { 0 };
+        gint primary_monitor = 0;
 
         if (!theme_check_init(MATE_NOTIFYD_MAJOR_VERSION, MATE_NOTIFYD_MINOR_VERSION, 0)) {
                 fprintf(stderr, "Failed to initialise theme engine\n");
                 return EXIT_FAILURE;
         }
 
+        /* Create notification */
         window = create_notification(NULL);
+
+        /* Placement */
+        screen = gdk_screen_get_default();
+        primary_monitor = gdk_screen_get_primary_monitor(screen);
+        gdk_screen_get_monitor_geometry(screen, primary_monitor, &rect);
+        move_notification(window, (rect.x + (rect.width - 400) - 10), rect.y + 10);
+
         show_notification(window);
 
         gtk_main();

@@ -106,6 +106,14 @@ __solus_public__ void hide_notification(GtkWindow *notif_window)
         gtk_widget_hide(GTK_WIDGET(notif_window));
 }
 
+__solus_public__ void move_notification(GtkWindow *notif_window, int x, int y)
+{
+        if (!notif_window) {
+                return;
+        }
+        gtk_window_move(notif_window, x, y);
+}
+
 /**
  * Hooks for GModule initialisation
  */
