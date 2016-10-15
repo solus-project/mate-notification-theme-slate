@@ -127,22 +127,15 @@ static void sol_theme_changed(void)
 static void sol_initialize_theme(void)
 {
         GtkSettings *settings = NULL;
-        gchar *theme_nom = NULL;
 
         settings = gtk_settings_get_default();
-        g_object_get(settings, "gtk-theme-name", &theme_nom, NULL);
-
-        if (g_str_equal(theme_nom, "HighContrast")) {
-                sol_set_theme("theme_hc.css");
-        } else {
-                sol_set_theme("theme.css");
-        }
-        g_free(theme_nom);
 
         _gtk_settings_con_id = g_signal_connect(settings,
                                                 "notify::gtk-theme-name",
                                                 G_CALLBACK(sol_theme_changed),
                                                 NULL);
+        /* Now update theme settings */
+        sol_theme_changed();
 }
 
 /**
