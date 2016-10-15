@@ -12,7 +12,7 @@ AC_CONFIG_MACRO_DIR([m4])
 
 AC_CONFIG_FILES([Makefile])
 
-m4_define([gtk_required_version], [3.20.0])
+m4_define([gtk_required_version], [3.18.0])
 
 PKG_CHECK_MODULES(THEME,
         [
