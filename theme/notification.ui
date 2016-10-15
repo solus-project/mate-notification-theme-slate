@@ -7,7 +7,7 @@
     <property name="can_focus">False</property>
     <property name="icon_name">window-close-symbolic</property>
   </object>
-  <template class="SolNotificationWindow" parent="GtkWindow">
+  <object class="GtkWindow" id="SolNotificationWindow">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox" id="box">
@@ -60,7 +60,6 @@
                 <attributes>
                   <attribute name="weight" value="semibold"/>
                 </attributes>
-                <signal name="activate-link" handler="link_activated" swapped="no"/>
                 <style>
                   <class name="notification-title"/>
                 </style>
@@ -82,7 +81,6 @@
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="xalign">0</property>
-                <signal name="activate-link" handler="link_activated" swapped="no"/>
                 <style>
                   <class name="notification-body"/>
                 </style>
@@ -101,7 +99,6 @@
                 <property name="valign">start</property>
                 <property name="image">image2</property>
                 <property name="relief">none</property>
-                <signal name="clicked" handler="close_clicked" swapped="yes"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -156,5 +153,5 @@
     <style>
       <class name="sol-notification-window"/>
     </style>
-  </template>
+  </object>
 </interface>

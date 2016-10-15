@@ -14,33 +14,25 @@
 #include "engine-api.h"
 #include <gtk/gtk.h>
 
-G_BEGIN_DECLS
-
-typedef struct _SolNotificationWindow SolNotificationWindow;
-typedef struct _SolNotificationWindowClass SolNotificationWindowClass;
-
-#define SOL_TYPE_NOTIFICATION_WINDOW sol_notification_window_get_type()
-#define SOL_NOTIFICATION_WINDOW(o)                                                                 \
-        (G_TYPE_CHECK_INSTANCE_CAST((o), SOL_TYPE_NOTIFICATION_WINDOW, SolNotificationWindow))
-#define SOL_IS_NOTIFICATION_WINDOW(o)                                                              \
-        (G_TYPE_CHECK_INSTANCE_TYPE((o), SOL_TYPE_NOTIFICATION_WINDOW))
-#define SOL_NOTIFICATION_WINDOW_CLASS(o)                                                           \
-        (G_TYPE_CHECK_CLASS_CAST((o), SOL_TYPE_NOTIFICATION_WINDOW, SolNotificationWindowClass))
-#define SOL_IS_NOTIFICATION_WINDOW_CLASS(o)                                                        \
-        (G_TYPE_CHECK_CLASS_TYPE((o), SOL_TYPE_NOTIFICATION_WINDOW))
-#define SOL_NOTIFICATION_WINDOW_GET_CLASS(o)                                                       \
-        (G_TYPE_INSTANCE_GET_CLASS((o), SOL_TYPE_NOTIFICATION_WINDOW, SolNotificationWindowClass))
+typedef struct SolNotificationWindow {
+        GtkWidget *window;
+        GtkWidget *image_icon;
+        GtkWidget *label_title;
+        GtkWidget *label_body;
+        GtkWidget *button_close;
+        GtkWidget *box_actions;
+        UrlClickedCb url_clicked;
+        gboolean action_icons;
+} SolNotificationWindow;
 
 GtkWidget *sol_notification_window_new(UrlClickedCb url_clicked);
 
-GType sol_notification_window_get_type(void);
+void sol_notification_window_destroy(SolNotificationWindow *window);
 
 void sol_notification_window_set_text(SolNotificationWindow *window, const char *summary,
                                       const char *body);
 
 void sol_notification_window_set_pixbuf(SolNotificationWindow *window, GdkPixbuf *pixbuf);
-
-void sol_notification_window_set_url_callback(SolNotificationWindow *window, UrlClickedCb cb);
 
 void sol_notification_window_add_action(SolNotificationWindow *window, const char *label,
                                         const char *key, GCallback cb);
@@ -48,8 +40,6 @@ void sol_notification_window_add_action(SolNotificationWindow *window, const cha
 void sol_notification_window_clear_actions(SolNotificationWindow *window);
 
 void sol_notification_window_set_hints(SolNotificationWindow *window, GHashTable *hints);
-
-G_END_DECLS
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

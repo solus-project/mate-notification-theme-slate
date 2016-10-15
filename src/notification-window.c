@@ -17,29 +17,12 @@ SOLUS_BEGIN_PEDANTIC
 #include "notification-window.h"
 SOLUS_END_PEDANTIC
 
-struct _SolNotificationWindowClass {
-        GtkWindowClass parent_class;
-};
-
 typedef void (*ActionCb)(GtkWindow *notif_window, const char *key);
-
-struct _SolNotificationWindow {
-        GtkWindow parent;
-        GtkWidget *image_icon;
-        GtkWidget *label_title;
-        GtkWidget *label_body;
-        GtkWidget *button_close;
-        GtkWidget *box_actions;
-        UrlClickedCb url_clicked;
-        gboolean action_icons;
-};
 
 /**
  * Default notification width
  */
 #define NOTIFICATION_SIZE 400
-
-G_DEFINE_TYPE(SolNotificationWindow, sol_notification_window, GTK_TYPE_WINDOW)
 
 /*
  * Replace one string with another in the given input text
@@ -83,25 +66,9 @@ static gchar *sol_markup_escape(const char *input)
         return markup_safe;
 }
 
-/**
- * sol_notification_window_new:
- *
- * Construct a new SolNotificationWindow widget
- */
-GtkWidget *sol_notification_window_new(UrlClickedCb cb)
-{
-        GtkWidget *ret = g_object_new(SOL_TYPE_NOTIFICATION_WINDOW, "type", GTK_WINDOW_POPUP, NULL);
-        if (!ret) {
-                return NULL;
-        }
-        /* Couldn't be bothered with gobject properties. */
-        sol_notification_window_set_url_callback(SOL_NOTIFICATION_WINDOW(ret), cb);
-        return ret;
-}
-
 static void close_clicked(SolNotificationWindow *self, __solus_unused__ gpointer userdata)
 {
-        gtk_widget_destroy(GTK_WIDGET(self));
+        gtk_widget_destroy(GTK_WIDGET(self->window));
 }
 
 /**
@@ -111,82 +78,83 @@ static void link_activated(SolNotificationWindow *self, const char *url,
                            __solus_unused__ gpointer userdata)
 {
         if (self->url_clicked) {
-                self->url_clicked(GTK_WINDOW(self), url);
+                self->url_clicked(GTK_WINDOW(self->window), url);
         }
 }
 
-/**
- * Override the width requests to a fixed size
- */
-static void sol_notification_window_get_preferred_width(__solus_unused__ GtkWidget *widget,
-                                                        gint *min, gint *nat)
+void sol_notification_window_destroy(SolNotificationWindow *window)
 {
-        *min = *nat = NOTIFICATION_SIZE;
-}
-
-static void sol_notification_window_get_preferred_width_for_height(
-    __solus_unused__ GtkWidget *widget, __solus_unused__ gint h, gint *min, gint *nat)
-{
-        *min = *nat = NOTIFICATION_SIZE;
+        g_free(window);
 }
 
 /**
- * Class initialisation
+ * sol_notification_window_new:
+ *
+ * Construct a new SolNotificationWindow widget
  */
-static void sol_notification_window_class_init(SolNotificationWindowClass *klazz)
+GtkWidget *sol_notification_window_new(UrlClickedCb cb)
 {
-        GtkWidgetClass *wid_class = GTK_WIDGET_CLASS(klazz);
-
-        /* widget vtable */
-        wid_class->get_preferred_width = sol_notification_window_get_preferred_width;
-        wid_class->get_preferred_width_for_height =
-            sol_notification_window_get_preferred_width_for_height;
-
-        /* GtkTemplate */
-        gtk_widget_class_set_template_from_resource(
-            wid_class, "/com/solus-project/mate-notification-daemon-theme-solus/notification.ui");
-
-        /* Callbacks */
-        gtk_widget_class_bind_template_callback(wid_class, close_clicked);
-        gtk_widget_class_bind_template_callback(wid_class, link_activated);
-
-        /* Bind children to fields */
-        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, image_icon);
-        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, label_title);
-        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, label_body);
-        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, button_close);
-        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, box_actions);
-}
-
-/**
- * Instaniation
- */
-static void sol_notification_window_init(SolNotificationWindow *self)
-{
-        /* Go build the UI */
-        gtk_widget_init_template(GTK_WIDGET(self));
+        GtkWidget *window = NULL;
+        SolNotificationWindow *self = NULL;
+        GtkBuilder *builder = NULL;
         GdkScreen *screen = NULL;
         GdkVisual *visual = NULL;
 
+        self = g_new0(SolNotificationWindow, 1);
+        self->url_clicked = cb;
+
+        /* Init UI */
+        builder = gtk_builder_new_from_resource(
+            "/com/solus-project/mate-notification-daemon-theme-solus/notification.ui");
+
+        /* Go build the UI */
+        self->window = window =
+            GTK_WIDGET(gtk_builder_get_object(builder, "SolNotificationWindow"));
+        g_object_set_data_full(G_OBJECT(self->window),
+                               "_notification_data",
+                               self,
+                               (GDestroyNotify)sol_notification_window_destroy);
+        self->image_icon = GTK_WIDGET(gtk_builder_get_object(builder, "image_icon"));
+        self->label_title = GTK_WIDGET(gtk_builder_get_object(builder, "label_title"));
+        self->label_body = GTK_WIDGET(gtk_builder_get_object(builder, "label_body"));
+        self->button_close = GTK_WIDGET(gtk_builder_get_object(builder, "button_close"));
+        self->box_actions = GTK_WIDGET(gtk_builder_get_object(builder, "box_actions"));
+
+        /* Done with the builder now */
+        g_object_unref(builder);
+
+        /* Callbacks */
+        g_signal_connect_swapped(self->label_title,
+                                 "activate-link",
+                                 G_CALLBACK(link_activated),
+                                 self);
+        g_signal_connect_swapped(self->label_body,
+                                 "activate-link",
+                                 G_CALLBACK(link_activated),
+                                 self);
+        g_signal_connect_swapped(self->button_close, "clicked", G_CALLBACK(close_clicked), self);
+
         /* Attempt to set an RGBA visual */
-        screen = gtk_widget_get_screen(GTK_WIDGET(self));
+        screen = gtk_widget_get_screen(GTK_WIDGET(window));
         visual = gdk_screen_get_rgba_visual(screen);
         if (visual) {
-                gtk_widget_set_visual(GTK_WIDGET(self), visual);
+                gtk_widget_set_visual(GTK_WIDGET(window), visual);
         }
 
         /* Play nice with the window manager */
-        gtk_window_set_resizable(GTK_WINDOW(self), FALSE);
-        gtk_window_set_skip_pager_hint(GTK_WINDOW(self), TRUE);
-        gtk_window_set_skip_taskbar_hint(GTK_WINDOW(self), TRUE);
-        gtk_window_set_decorated(GTK_WINDOW(self), FALSE);
-        gtk_window_set_default_size(GTK_WINDOW(self), NOTIFICATION_SIZE, -1);
-        gtk_window_set_type_hint(GTK_WINDOW(self), GDK_WINDOW_TYPE_HINT_NOTIFICATION);
+        gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+        gtk_window_set_skip_pager_hint(GTK_WINDOW(window), TRUE);
+        gtk_window_set_skip_taskbar_hint(GTK_WINDOW(window), TRUE);
+        gtk_window_set_decorated(GTK_WINDOW(window), FALSE);
+        gtk_window_set_default_size(GTK_WINDOW(window), NOTIFICATION_SIZE, -1);
+        gtk_window_set_type_hint(GTK_WINDOW(window), GDK_WINDOW_TYPE_HINT_NOTIFICATION);
 
         /* Ensure we're clean pre-show */
         sol_notification_window_set_text(self, NULL, NULL);
         sol_notification_window_set_pixbuf(self, NULL);
         self->action_icons = FALSE;
+
+        return self->window;
 }
 
 void sol_notification_window_set_text(SolNotificationWindow *self, const char *summary,
@@ -236,7 +204,7 @@ void sol_notification_window_set_url_callback(SolNotificationWindow *self, UrlCl
 
 static void sol_notification_action_clicked(GtkWidget *button, gpointer userdata)
 {
-        GtkWindow *self = GTK_WINDOW(userdata);
+        SolNotificationWindow *self = userdata;
         const gchar *key = NULL;
         ActionCb cb = NULL;
 
@@ -245,7 +213,7 @@ static void sol_notification_action_clicked(GtkWidget *button, gpointer userdata
         cb = g_object_get_data(G_OBJECT(button), "_notification_cb");
         SOLUS_END_PEDANTIC
         if (cb) {
-                cb(self, key);
+                cb(GTK_WINDOW(self->window), key);
         }
 }
 

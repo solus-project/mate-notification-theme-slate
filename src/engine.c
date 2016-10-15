@@ -201,6 +201,16 @@ __solus_public__ void get_theme_info(char **theme_name, char **theme_ver, char *
         *homepage = g_strdup(PACKAGE_URL);
 }
 
+/**
+ * Convenience wrapper
+ */
+static inline SolNotificationWindow *_get_notification_window(GtkWindow *window)
+{
+        SolNotificationWindow *real_window =
+            g_object_get_data(G_OBJECT(window), "_notification_data");
+        return real_window;
+}
+
 __solus_public__ GtkWindow *create_notification(UrlClickedCb cb)
 {
         return GTK_WINDOW(sol_notification_window_new(cb));
@@ -245,7 +255,8 @@ __solus_public__ void set_notification_text(GtkWindow *notif_window, const char 
         if (!notif_window) {
                 return;
         }
-        sol_notification_window_set_text(SOL_NOTIFICATION_WINDOW(notif_window), summary, body);
+        SolNotificationWindow *window = _get_notification_window(notif_window);
+        sol_notification_window_set_text(window, summary, body);
 }
 
 __solus_public__ void set_notification_icon(GtkWindow *notif_window, GdkPixbuf *pixbuf)
@@ -253,7 +264,8 @@ __solus_public__ void set_notification_icon(GtkWindow *notif_window, GdkPixbuf *
         if (!notif_window) {
                 return;
         }
-        sol_notification_window_set_pixbuf(SOL_NOTIFICATION_WINDOW(notif_window), pixbuf);
+        SolNotificationWindow *window = _get_notification_window(notif_window);
+        sol_notification_window_set_pixbuf(window, pixbuf);
 }
 
 __solus_public__ gboolean get_always_stack(__solus_unused__ GtkWindow *notif_window)
@@ -293,7 +305,8 @@ __solus_public__ void add_notification_action(GtkWindow *notif_window, const cha
         if (!notif_window) {
                 return;
         }
-        sol_notification_window_add_action(SOL_NOTIFICATION_WINDOW(notif_window), label, key, cb);
+        SolNotificationWindow *window = _get_notification_window(notif_window);
+        sol_notification_window_add_action(window, label, key, cb);
 }
 
 __solus_public__ void clear_notification_actions(GtkWindow *notif_window)
@@ -301,7 +314,8 @@ __solus_public__ void clear_notification_actions(GtkWindow *notif_window)
         if (!notif_window) {
                 return;
         }
-        sol_notification_window_clear_actions(SOL_NOTIFICATION_WINDOW(notif_window));
+        SolNotificationWindow *window = _get_notification_window(notif_window);
+        sol_notification_window_clear_actions(window);
 }
 
 __solus_public__ void set_notification_hints(GtkWindow *notif_window, GHashTable *hints)
@@ -309,17 +323,17 @@ __solus_public__ void set_notification_hints(GtkWindow *notif_window, GHashTable
         if (!notif_window) {
                 return;
         }
-        sol_notification_window_set_hints(SOL_NOTIFICATION_WINDOW(notif_window), hints);
+        SolNotificationWindow *window = _get_notification_window(notif_window);
+        sol_notification_window_set_hints(window, hints);
 }
 /**
  * Hooks for GModule initialisation
  */
-__solus_public__ const gchar *g_module_check_init(GModule *module)
+__solus_public__ const gchar *g_module_check_init(__attribute__((unused)) GModule *module)
 {
         if (!_initial_resource_loaded) {
                 sol_load_resources();
                 _initial_resource_loaded = true;
-                g_module_make_resident(module);
         }
         return NULL;
 }
