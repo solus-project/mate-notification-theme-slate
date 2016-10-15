@@ -184,6 +184,11 @@ __solus_public__ void set_notification_icon(GtkWindow *notif_window, GdkPixbuf *
         sol_notification_window_set_pixbuf(SOL_NOTIFICATION_WINDOW(notif_window), pixbuf);
 }
 
+__solus_public__ gboolean get_always_stack(__solus_unused__ GtkWindow *notif_window)
+{
+        return TRUE;
+}
+
 /**
  * Hooks for GModule initialisation
  */
