@@ -1,9 +1,18 @@
 mate-notification-theme-solus
 =============================
 
-**Work In Progress**
+A MATE Notification Daemon theme, emulating the Arc-styled Budgie notifications
+of Solus. Style credit belongs solely with [horst3180](https://github.com/horst3180/arc-theme) for his design work and the
+implementation within [Budgie](https://github.com/solus-project/budgie-desktop).
 
-A Solus-styled theme for the MATE Notification Daemon
+This is a re-implementation for MATE, borrowing a subset of the Budgie theme,
+and providing a clean + stable theme engine.
+
+mate-notification-theme-solus is a [Solus project](https://solus-project.com/)
+
+![logo](https://build.solus-project.com/logo.png)
+
+![screenshot](https://raw.githubusercontent.com/solus-project/mate-notification-theme-solus/master/landing.png)
 
 License
 -------
