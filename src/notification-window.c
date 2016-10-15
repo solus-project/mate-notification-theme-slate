@@ -31,6 +31,7 @@ struct _SolNotificationWindow {
         GtkWidget *button_close;
         GtkWidget *box_actions;
         UrlClickedCb url_clicked;
+        gboolean action_icons;
 };
 
 /**
@@ -199,6 +200,7 @@ static void sol_notification_window_init(SolNotificationWindow *self)
         /* Ensure we're clean pre-show */
         sol_notification_window_set_text(self, NULL, NULL);
         sol_notification_window_set_pixbuf(self, NULL);
+        self->action_icons = FALSE;
 }
 
 void sol_notification_window_set_text(SolNotificationWindow *self, const char *summary,
@@ -261,12 +263,44 @@ static void sol_notification_action_clicked(GtkWidget *button, gpointer userdata
         }
 }
 
+/**
+ * Attempt to find the best icon for the named icon, preferring symbolic
+ * versions if they're in the theme
+ */
+static gchar *sol_find_best_icon(const gchar *label)
+{
+        GtkIconTheme *icon_theme = NULL;
+        gchar *tmp = NULL;
+
+        icon_theme = gtk_icon_theme_get_default();
+        /* Already a -symbolic? Return original string */
+        if (g_str_has_suffix(label, "-symbolic")) {
+                return g_strdup(label);
+        }
+        /* Try with -symbolic variant if theme has it */
+        tmp = g_strdup_printf("%s-symbolic", label);
+        if (gtk_icon_theme_has_icon(icon_theme, tmp)) {
+                return tmp;
+        }
+        /* Have to make do with this I guess. :P */
+        g_free(tmp);
+        return g_strdup(label);
+}
+
 void sol_notification_window_add_action(SolNotificationWindow *self, const char *label,
                                         const char *key, GCallback cb)
 {
         GtkWidget *button = NULL;
 
-        button = gtk_button_new_with_label(label);
+        /* Future support for action-icons */
+        if (self->action_icons) {
+                gchar *icon_name = sol_find_best_icon(label);
+                button = gtk_button_new_from_icon_name(icon_name, GTK_ICON_SIZE_MENU);
+                g_free(icon_name);
+        } else {
+                button = gtk_button_new_with_label(label);
+        }
+
         gtk_widget_set_can_focus(button, FALSE);
         gtk_widget_set_can_default(button, FALSE);
 
@@ -288,6 +322,22 @@ void sol_notification_window_clear_actions(SolNotificationWindow *self)
         gtk_container_foreach(GTK_CONTAINER(self->box_actions),
                               (GtkCallback)gtk_widget_destroy,
                               NULL);
+}
+
+/**
+ * The only hint we actually look for is action-icons, in the hopes that
+ * in future mate-notification-daemon will broadcast action-icons as a
+ * capability.
+ */
+void sol_notification_window_set_hints(SolNotificationWindow *self, GHashTable *hints)
+{
+        GValue *hash = NULL;
+
+        hash = g_hash_table_lookup(hints, "action-icons");
+        if (!hash || !G_VALUE_HOLDS_BOOLEAN(hash)) {
+                return;
+        }
+        self->action_icons = g_value_get_boolean(hash);
 }
 
 /*

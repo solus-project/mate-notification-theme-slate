@@ -303,6 +303,13 @@ __solus_public__ void clear_notification_actions(GtkWindow *notif_window)
         sol_notification_window_clear_actions(SOL_NOTIFICATION_WINDOW(notif_window));
 }
 
+__solus_public__ void set_notification_hints(GtkWindow *notif_window, GHashTable *hints)
+{
+        if (!notif_window) {
+                return;
+        }
+        sol_notification_window_set_hints(SOL_NOTIFICATION_WINDOW(notif_window), hints);
+}
 /**
  * Hooks for GModule initialisation
  */

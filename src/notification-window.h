@@ -47,6 +47,8 @@ void sol_notification_window_add_action(SolNotificationWindow *window, const cha
 
 void sol_notification_window_clear_actions(SolNotificationWindow *window);
 
+void sol_notification_window_set_hints(SolNotificationWindow *window, GHashTable *hints);
+
 G_END_DECLS
 
 /*
