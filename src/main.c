@@ -39,7 +39,10 @@ int main(int argc, char **argv)
         gdk_screen_get_monitor_geometry(screen, primary_monitor, &rect);
         move_notification(window, (rect.x + (rect.width - 400) - 10), rect.y + 40);
 
-        set_notification_text(window, "ERMAHGERD DERGHUNS", "This is a notification. >_>");
+        set_notification_text(window,
+                              "ERMAHGERD DERGHUNS",
+                              "This is a notification. >_> I'm also making it <b>really</b> long "
+                              "to test the <i>line wrapping</i> abilities of the widget.");
         set_notification_icon(window, NULL);
 
         show_notification(window);
