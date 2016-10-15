@@ -15,7 +15,7 @@ function buildTheme(version)
         .pipe(gulp.dest(version))
 }
 
-var themeVersions = ['3.20'];
+var themeVersions = ['3.18', '3.20'];
 themeVersions.forEach(function(version) {
     gulp.task(version, function() {
         return buildTheme(version);
