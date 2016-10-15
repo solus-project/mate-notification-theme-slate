@@ -176,6 +176,14 @@ __solus_public__ void set_notification_text(GtkWindow *notif_window, const char 
         sol_notification_window_set_text(SOL_NOTIFICATION_WINDOW(notif_window), summary, body);
 }
 
+__solus_public__ void set_notification_icon(GtkWindow *notif_window, GdkPixbuf *pixbuf)
+{
+        if (!notif_window) {
+                return;
+        }
+        sol_notification_window_set_pixbuf(SOL_NOTIFICATION_WINDOW(notif_window), pixbuf);
+}
+
 /**
  * Hooks for GModule initialisation
  */

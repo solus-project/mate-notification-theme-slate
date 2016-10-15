@@ -37,6 +37,8 @@ GType sol_notification_window_get_type(void);
 void sol_notification_window_set_text(SolNotificationWindow *window, const char *summary,
                                       const char *body);
 
+void sol_notification_window_set_pixbuf(SolNotificationWindow *window, GdkPixbuf *pixbuf);
+
 G_END_DECLS
 
 /*

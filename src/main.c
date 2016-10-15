@@ -40,6 +40,7 @@ int main(int argc, char **argv)
         move_notification(window, (rect.x + (rect.width - 400) - 10), rect.y + 40);
 
         set_notification_text(window, "ERMAHGERD DERGHUNS", "This is a notification. >_>");
+        set_notification_icon(window, NULL);
 
         show_notification(window);
 

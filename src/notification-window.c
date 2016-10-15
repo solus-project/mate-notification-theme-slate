@@ -153,6 +153,20 @@ void sol_notification_window_set_text(SolNotificationWindow *self, const char *s
                 gtk_label_set_text(GTK_LABEL(self->label_body), "");
         }
 }
+
+void sol_notification_window_set_pixbuf(SolNotificationWindow *self, GdkPixbuf *pixbuf)
+{
+        /* Gracefully handle missing pixbuf */
+        if (!pixbuf) {
+                gtk_image_set_from_icon_name(GTK_IMAGE(self->image_icon),
+                                             "mail-unread-symbolic",
+                                             GTK_ICON_SIZE_INVALID);
+                gtk_image_set_pixel_size(GTK_IMAGE(self->image_icon), 48);
+        } else {
+                gtk_image_set_from_pixbuf(GTK_IMAGE(self->image_icon), pixbuf);
+        }
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *
