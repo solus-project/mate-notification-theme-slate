@@ -42,6 +42,9 @@ void sol_notification_window_set_pixbuf(SolNotificationWindow *window, GdkPixbuf
 
 void sol_notification_window_set_url_callback(SolNotificationWindow *window, UrlClickedCb cb);
 
+void sol_notification_window_add_action(SolNotificationWindow *window, const char *label,
+                                        const char *key, GCallback cb);
+
 G_END_DECLS
 
 /*

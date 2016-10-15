@@ -17,6 +17,11 @@ SOLUS_BEGIN_INCLUDES
 #include "engine-api.h"
 SOLUS_END_INCLUDES
 
+static void click_callback(__solus_unused__ GtkWindow *notif_window, const gchar *key)
+{
+        fprintf(stdout, "Clicked with action: %s\n", key);
+}
+
 int main(int argc, char **argv)
 {
         gtk_init(&argc, &argv);
@@ -45,6 +50,7 @@ int main(int argc, char **argv)
                               "to test the <i>line wrapping</i> abilities of the widget.");
         set_notification_icon(window, NULL);
 
+        add_notification_actions(window, "Button!", "le-button", G_CALLBACK(click_callback));
         show_notification(window);
 
         gtk_main();

@@ -21,6 +21,8 @@ struct _SolNotificationWindowClass {
         GtkWindowClass parent_class;
 };
 
+typedef void (*ActionCb)(GtkWindow *notif_window, const char *key);
+
 struct _SolNotificationWindow {
         GtkWindow parent;
         GtkWidget *image_icon;
@@ -242,6 +244,43 @@ void sol_notification_window_set_url_callback(SolNotificationWindow *self, UrlCl
                 return;
         }
         self->url_clicked = cb;
+}
+
+static void sol_notification_action_clicked(GtkWidget *button, gpointer userdata)
+{
+        GtkWindow *self = GTK_WINDOW(userdata);
+        const gchar *key = NULL;
+        ActionCb cb = NULL;
+
+        key = g_object_get_data(G_OBJECT(button), "_notification_key");
+        SOLUS_BEGIN_INCLUDES
+        cb = g_object_get_data(G_OBJECT(button), "_notification_cb");
+        SOLUS_END_INCLUDES
+        if (cb) {
+                cb(self, key);
+        }
+}
+
+void sol_notification_window_add_action(SolNotificationWindow *self, const char *label,
+                                        const char *key, GCallback cb)
+{
+        GtkWidget *button = NULL;
+
+        button = gtk_button_new_with_label(label);
+        gtk_widget_set_can_focus(button, FALSE);
+        gtk_widget_set_can_default(button, FALSE);
+
+        g_object_set_data_full(G_OBJECT(button), "_notification_key", g_strdup(key), g_free);
+        if (cb) {
+                SOLUS_BEGIN_INCLUDES
+                g_object_set_data(G_OBJECT(button), "_notification_cb", (void *)cb);
+                SOLUS_END_INCLUDES
+        }
+        g_signal_connect(button, "clicked", G_CALLBACK(sol_notification_action_clicked), self);
+
+        gtk_container_add(GTK_CONTAINER(self->box_actions), button);
+
+        gtk_widget_show_all(self->box_actions);
 }
 
 /*
