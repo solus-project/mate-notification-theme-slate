@@ -17,8 +17,17 @@ SOLUS_BEGIN_INCLUDES
 #include "notification-window.h"
 SOLUS_END_INCLUDES
 
-struct _SolNotificationWindowPrivate {
-        int __reserved1;
+struct _SolNotificationWindowClass {
+        GtkWindowClass parent_class;
+};
+
+struct _SolNotificationWindow {
+        GtkWindow parent;
+        GtkWidget *image_icon;
+        GtkWidget *label_title;
+        GtkWidget *label_body;
+        GtkWidget *button_close;
+        GtkWidget *box_actions;
 };
 
 /**
@@ -26,7 +35,7 @@ struct _SolNotificationWindowPrivate {
  */
 #define NOTIFICATION_SIZE 400
 
-G_DEFINE_TYPE_WITH_PRIVATE(SolNotificationWindow, sol_notification_window, GTK_TYPE_WINDOW)
+G_DEFINE_TYPE(SolNotificationWindow, sol_notification_window, GTK_TYPE_WINDOW)
 
 /**
  * sol_notification_window_new:
@@ -88,6 +97,12 @@ static void sol_notification_window_class_init(SolNotificationWindowClass *klazz
         gtk_widget_class_set_template_from_resource(
             wid_class, "/com/solus-project/mate-notification-daemon-theme-solus/notification.ui");
         gtk_widget_class_bind_template_callback(wid_class, close_clicked);
+
+        /* Bind children to fields */
+        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, image_icon);
+        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, label_title);
+        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, button_close);
+        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, box_actions);
 }
 
 /**
@@ -95,7 +110,6 @@ static void sol_notification_window_class_init(SolNotificationWindowClass *klazz
  */
 static void sol_notification_window_init(SolNotificationWindow *self)
 {
-        self->priv = sol_notification_window_get_instance_private(self);
         /* Go build the UI */
         gtk_widget_init_template(GTK_WIDGET(self));
 

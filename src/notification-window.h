@@ -15,7 +15,6 @@
 
 G_BEGIN_DECLS
 
-typedef struct _SolNotificationWindowPrivate SolNotificationWindowPrivate;
 typedef struct _SolNotificationWindow SolNotificationWindow;
 typedef struct _SolNotificationWindowClass SolNotificationWindowClass;
 
@@ -30,15 +29,6 @@ typedef struct _SolNotificationWindowClass SolNotificationWindowClass;
         (G_TYPE_CHECK_CLASS_TYPE((o), SOL_TYPE_NOTIFICATION_WINDOW))
 #define SOL_NOTIFICATION_WINDOW_GET_CLASS(o)                                                       \
         (G_TYPE_INSTANCE_GET_CLASS((o), SOL_TYPE_NOTIFICATION_WINDOW, SolNotificationWindowClass))
-
-struct _SolNotificationWindowClass {
-        GtkWindowClass parent_class;
-};
-
-struct _SolNotificationWindow {
-        GtkWindow parent;
-        SolNotificationWindowPrivate *priv;
-};
 
 GtkWidget *sol_notification_window_new(void);
 
