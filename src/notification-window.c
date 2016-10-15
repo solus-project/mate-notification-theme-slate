@@ -37,6 +37,48 @@ struct _SolNotificationWindow {
 
 G_DEFINE_TYPE(SolNotificationWindow, sol_notification_window, GTK_TYPE_WINDOW)
 
+/*
+ * Replace one string with another in the given input text
+ */
+static gchar *sol_string_replace(char **input, char *delim, char *replace)
+{
+        gchar **splits = g_strsplit(*input, delim, -1);
+        gchar *repl = g_strjoinv(replace, splits);
+        g_strfreev(splits);
+        g_free(*input);
+        return repl;
+}
+
+/**
+ * Replace common characters known to cause issues in the pango markup
+ * renderer, and optimistically attempt to use the clean string for a
+ * displayed string.
+ *
+ * This allows us to accept valid markup and display it in the body,
+ * for example, as seen in applications such as Rhythmbox.
+ *
+ * If Pango is still unhappy with the string, we strip it and return a
+ * sanitized version.
+ */
+static gchar *sol_markup_escape(const char *input)
+{
+        gchar *start = g_strdup(input);
+        start = sol_string_replace(&start, "&", "&amp;");
+        start = sol_string_replace(&start, "'", "&apos;");
+        start = sol_string_replace(&start, "\"", "&quot;");
+
+        /* Is this markup safe now ? */
+        if (pango_parse_markup(start, -1, 0, NULL, NULL, NULL, NULL)) {
+                return start;
+        }
+
+        /* Problem with the markup itself, pango won't render it. Strip everything
+         * from it and return the clean string */
+        gchar *markup_safe = g_markup_escape_text(start, -1);
+        g_free(start);
+        return markup_safe;
+}
+
 /**
  * sol_notification_window_new:
  *
@@ -137,7 +179,7 @@ void sol_notification_window_set_text(SolNotificationWindow *self, const char *s
 {
         /* Update summary */
         if (summary) {
-                gchar *m_summary = g_markup_escape_text(summary, -1);
+                gchar *m_summary = sol_markup_escape(summary);
                 gtk_label_set_markup(GTK_LABEL(self->label_title), m_summary);
                 g_free(m_summary);
         } else {
@@ -147,7 +189,7 @@ void sol_notification_window_set_text(SolNotificationWindow *self, const char *s
 
         /* Update body */
         if (body) {
-                gchar *m_body = g_markup_escape_text(body, -1);
+                gchar *m_body = sol_markup_escape(body);
                 gtk_label_set_markup(GTK_LABEL(self->label_body), m_body);
                 g_free(m_body);
         } else {
