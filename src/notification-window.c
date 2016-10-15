@@ -232,10 +232,10 @@ void sol_notification_window_set_pixbuf(SolNotificationWindow *self, GdkPixbuf *
                 gtk_image_set_from_icon_name(GTK_IMAGE(self->image_icon),
                                              "mail-unread-symbolic",
                                              GTK_ICON_SIZE_INVALID);
-                gtk_image_set_pixel_size(GTK_IMAGE(self->image_icon), 48);
         } else {
                 gtk_image_set_from_pixbuf(GTK_IMAGE(self->image_icon), pixbuf);
         }
+        gtk_image_set_pixel_size(GTK_IMAGE(self->image_icon), 48);
 }
 
 void sol_notification_window_set_url_callback(SolNotificationWindow *self, UrlClickedCb cb)
