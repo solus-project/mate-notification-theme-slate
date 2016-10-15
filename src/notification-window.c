@@ -172,6 +172,10 @@ static void sol_notification_window_init(SolNotificationWindow *self)
         gtk_window_set_decorated(GTK_WINDOW(self), FALSE);
         gtk_window_set_default_size(GTK_WINDOW(self), NOTIFICATION_SIZE, -1);
         gtk_window_set_type_hint(GTK_WINDOW(self), GDK_WINDOW_TYPE_HINT_NOTIFICATION);
+
+        /* Ensure we're clean pre-show */
+        sol_notification_window_set_text(self, NULL, NULL);
+        sol_notification_window_set_pixbuf(self, NULL);
 }
 
 void sol_notification_window_set_text(SolNotificationWindow *self, const char *summary,
