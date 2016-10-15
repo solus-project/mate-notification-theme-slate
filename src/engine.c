@@ -141,7 +141,7 @@ static void sol_initialize_theme(void)
 /**
  * Load our theme assets into the global style context provider
  */
-__attribute__((constructor)) static void sol_load_resources(void)
+static void sol_load_resources(void)
 {
         /* Load our resources in */
         sol_resource_register_resource();
@@ -150,7 +150,7 @@ __attribute__((constructor)) static void sol_load_resources(void)
 /**
  * Unload the theme from the global style context provider
  */
-__attribute__((destructor)) static void sol_unload_resources(void)
+static void sol_unload_resources(void)
 {
         GdkScreen *screen = NULL;
         GtkSettings *settings = NULL;
