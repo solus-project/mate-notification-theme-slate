@@ -21,6 +21,11 @@ SOLUS_END_INCLUDES
 #include <stdbool.h>
 
 /**
+ * Whether we initially tried a theme load or not
+ */
+static bool _initial_theme_loaded = false;
+
+/**
  * We load and unload this to ensure we cause no problems to other plugins
  */
 static GtkCssProvider *_theme_style_provider = NULL;
@@ -115,7 +120,10 @@ __solus_public__ gboolean theme_check_init(unsigned int major, unsigned int mino
 {
         /* Micro version may change with devel builds so don't test it */
         if (major == MATE_NOTIFYD_MAJOR_VERSION && minor == MATE_NOTIFYD_MINOR_VERSION) {
-                sol_set_theme("theme.css");
+                if (!_initial_theme_loaded) {
+                        sol_set_theme("theme.css");
+                        _initial_theme_loaded = true;
+                }
                 return TRUE;
         }
         return FALSE;
