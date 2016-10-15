@@ -75,7 +75,7 @@ end:
 /**
  * Load our theme assets into the global style context provider
  */
-__attribute__((constructor)) static bool sol_theme_load(void)
+__attribute__((constructor)) static bool sol_load_resources(void)
 {
         /* Load our resources in */
         sol_resource_register_resource();
@@ -90,7 +90,7 @@ __attribute__((constructor)) static bool sol_theme_load(void)
 /**
  * Unload the theme from the global style context provider
  */
-__attribute__((destructor)) static void sol_theme_unload(void)
+__attribute__((destructor)) static void sol_unload_resources(void)
 {
         GdkScreen *screen = NULL;
 
@@ -220,7 +220,7 @@ __solus_public__ void notification_tick(__solus_unused__ GtkWindow *notif_window
  */
 __solus_public__ const gchar *g_module_check_init(__solus_unused__ GModule *module)
 {
-        if (!sol_theme_load()) {
+        if (!sol_load_resources()) {
                 return "Failed to load theme resources";
         }
         return NULL;
@@ -228,7 +228,7 @@ __solus_public__ const gchar *g_module_check_init(__solus_unused__ GModule *modu
 
 __solus_public__ void g_module_unload(__solus_unused__ GModule *module)
 {
-        sol_theme_unload();
+        sol_unload_resources();
 }
 
 /*
