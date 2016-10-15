@@ -1,0 +1,134 @@
+@function gtkalpha($c,$a) {
+    @return unquote("alpha(#{$c},#{$a})");
+}
+
+$roundness: 3px;
+$border_width: if($variant == 'default', 1px, 2px);
+$pos_list: ((top, bottom),(bottom,top),(left,right),(right,left));
+$asset_suffix: if($variant == 'default', '', '-hc');
+
+// Used to reset all style properties set by the gtk theme
+%reset_style {
+    background: none;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    -gtk-icon-shadow: none;
+    opacity: 1;
+    min-width: 0;
+    min-height: 0;
+}
+
+%widgets {
+
+    * {
+        padding: 0;
+        outline-color: transparentize($fg_color, 0.7);
+        outline-style: dashed;
+        outline-offset: -3px;
+        outline-width: 1px;
+        -gtk-outline-radius: 2px;
+        margin: 0;
+
+        @extend %reset_style;
+    }
+
+    label, image { color: inherit; }
+
+    // Buttons
+    button {
+        background-clip: padding-box;
+        padding: 4px 8px;
+        border: $border_width solid;
+        border-radius: $roundness;
+
+        @include button(normal);
+
+        separator { margin: 4px 1px; }
+
+        &.flat:not(:hover):not(:active):not(:checked) {
+            &, &:disabled {
+                @include button(flat);
+            }
+        }
+        &:hover { @include button(hover); }
+        &:active, &:checked { @include button(active); }
+        &:disabled {
+            @include button(insensitive);
+            &:active, &:checked {
+                @include button(insensitive-active);
+            }
+        }
+
+        // Destructive and Sugggested action buttons
+        @each $b_type, $b_color in (suggested-action, $suggested_color),
+                                   (destructive-action, $destructive_color) {
+            &.#{$b_type} {
+                @include button(normal, $b_color, $selected_fg_color);
+                &:hover { @include button(hover, $b_color, $selected_fg_color); }
+                &:active, &:checked { @include button(active, $active_bg:darken($b_color, 10%)); }
+                &:disabled { opacity: 0.5; }
+            }
+        }
+
+        &.text-button { padding: 4px 12px; }
+        &.image-button { padding: 4px; }
+    }
+
+
+    // Linked Widgets
+    .linked {
+        > entry,
+        > button { @extend %linked; }
+
+        // linked square buttons look weird
+        button.image-button { padding: 4px 7px; }
+    }
+
+    %linked_middle {
+        border-radius: 0;
+        border-right-style: none;
+    }
+    %linked {
+        @extend %linked_middle;
+        &:first-child {
+            border-top-left-radius: $roundness;
+            border-bottom-left-radius: $roundness;
+        }
+        &:last-child {
+            border-top-right-radius: $roundness;
+            border-bottom-right-radius: $roundness;
+            border-right-style: solid;
+        }
+        &:only-child {
+            border-radius: $roundness;
+            border-style: solid;
+        }
+    }
+}
+
+// Notifications
+.sol-notification-window {
+    background: none;
+    border-radius: 1px;
+}
+
+.sol-notification {
+    &.background {
+        border-radius: 1px;
+    }
+    .notification-title {
+        font-size: 110%;
+        color: $fg_color;
+    }
+    .notification-body { color: transparentize($fg_color, 0.3); }
+}
+
+.drop-shadow {
+    @extend %widgets;
+
+    color: $fg_color;
+    background-color: $panel_bg;
+    box-shadow: 0 2px 4px 0 $panel_shadow, 0 0 0 1px $panel_border;
+    border-radius: 1px;
+}

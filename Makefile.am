@@ -4,7 +4,10 @@ EXTRA_DIST = \
 	${top_srcdir}/README.md \
 	${top_srcdir}/LICENSE \
 	${top_srcdir}/src/theme.gresource.xml \
-	${top_srcdir}/src/notification.ui
+	${top_srcdir}/src/notification.ui \
+	${top_srcdir}/theme/3.20/theme.css \
+	${top_srcdir}/theme/3.20/theme_hc.css \
+	${top_srcdir}/src/notification.ui \
 
 NULL =
 
