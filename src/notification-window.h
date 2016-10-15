@@ -34,6 +34,9 @@ GtkWidget *sol_notification_window_new(void);
 
 GType sol_notification_window_get_type(void);
 
+void sol_notification_window_set_text(SolNotificationWindow *window, const char *summary,
+                                      const char *body);
+
 G_END_DECLS
 
 /*

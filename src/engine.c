@@ -167,6 +167,15 @@ __solus_public__ void move_notification(GtkWindow *notif_window, int x, int y)
         gtk_window_move(notif_window, x, y);
 }
 
+__solus_public__ void set_notification_text(GtkWindow *notif_window, const char *summary,
+                                            const char *body)
+{
+        if (!notif_window) {
+                return;
+        }
+        sol_notification_window_set_text(SOL_NOTIFICATION_WINDOW(notif_window), summary, body);
+}
+
 /**
  * Hooks for GModule initialisation
  */

@@ -39,6 +39,8 @@ int main(int argc, char **argv)
         gdk_screen_get_monitor_geometry(screen, primary_monitor, &rect);
         move_notification(window, (rect.x + (rect.width - 400) - 10), rect.y + 40);
 
+        set_notification_text(window, "ERMAHGERD DERGHUNS", "This is a notification. >_>");
+
         show_notification(window);
 
         gtk_main();

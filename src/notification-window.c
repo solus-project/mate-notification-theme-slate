@@ -101,6 +101,7 @@ static void sol_notification_window_class_init(SolNotificationWindowClass *klazz
         /* Bind children to fields */
         gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, image_icon);
         gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, label_title);
+        gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, label_body);
         gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, button_close);
         gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, box_actions);
 }
@@ -131,6 +132,27 @@ static void sol_notification_window_init(SolNotificationWindow *self)
         gtk_window_set_type_hint(GTK_WINDOW(self), GDK_WINDOW_TYPE_HINT_NOTIFICATION);
 }
 
+void sol_notification_window_set_text(SolNotificationWindow *self, const char *summary,
+                                      const char *body)
+{
+        /* TODO: Actual checking of markupibility! */
+
+        /* Update summary */
+        if (summary) {
+                gtk_label_set_text(GTK_LABEL(self->label_title), summary);
+        } else {
+                /* Empty label */
+                gtk_label_set_text(GTK_LABEL(self->label_title), "");
+        }
+
+        /* Update body */
+        if (body) {
+                gtk_label_set_text(GTK_LABEL(self->label_body), body);
+        } else {
+                /* Empty label */
+                gtk_label_set_text(GTK_LABEL(self->label_body), "");
+        }
+}
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *
