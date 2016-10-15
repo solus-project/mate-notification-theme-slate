@@ -61,7 +61,9 @@ static void sol_set_theme(const char *theme_portion)
         }
         screen = gdk_screen_get_default();
 
-        gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(prov), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        gtk_style_context_add_provider_for_screen(screen,
+                                                  GTK_STYLE_PROVIDER(prov),
+                                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
         _theme_style_provider = prov;
 end:
         g_free(uri);
