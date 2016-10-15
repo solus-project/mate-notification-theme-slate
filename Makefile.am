@@ -60,7 +60,8 @@ libsolus_mate_theme_la_SOURCES =	\
 	src/engine-api.h		\
 	src/engine.c			\
 	src/notification-window.h	\
-	src/notification-window.c
+	src/notification-window.c	\
+	src/util.h
 
 libsolus_mate_theme_la_CFLAGS = \
 	$(AM_CFLAGS)	 \
