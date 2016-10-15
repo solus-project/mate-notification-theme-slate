@@ -5,6 +5,8 @@ EXTRA_DIST = \
 	${top_srcdir}/LICENSE \
 	${top_srcdir}/theme/theme.gresource.xml \
 	${top_srcdir}/theme/notification.ui \
+	${top_srcdir}/theme/3.18/theme.css \
+	${top_srcdir}/theme/3.18/theme_hc.css \
 	${top_srcdir}/theme/3.20/theme.css \
 	${top_srcdir}/theme/3.20/theme_hc.css
 
