@@ -3,15 +3,14 @@ ACLOCAL_AMFLAGS = -I m4
 EXTRA_DIST = \
 	${top_srcdir}/README.md \
 	${top_srcdir}/LICENSE \
-	${top_srcdir}/src/theme.gresource.xml \
-	${top_srcdir}/src/notification.ui \
+	${top_srcdir}/theme/theme.gresource.xml \
+	${top_srcdir}/theme/notification.ui \
 	${top_srcdir}/theme/3.20/theme.css \
-	${top_srcdir}/theme/3.20/theme_hc.css \
-	${top_srcdir}/src/notification.ui
+	${top_srcdir}/theme/3.20/theme_hc.css
 
 NULL =
 
-theme_resources = $(shell glib-compile-resources --sourcedir=$(top_srcdir)/src --generate-dependencies $(top_srcdir)/src/theme.gresource.xml)
+theme_resources = $(shell glib-compile-resources --sourcedir=$(top_srcdir)/theme --generate-dependencies $(top_srcdir)/theme/theme.gresource.xml)
 
 BUILT_SOURCES = \
 	theme-resources.h \
@@ -21,11 +20,11 @@ CLEANFILES = \
 	$(BUILT_SOURCES)
 
 # resources
-theme-resources.h: $(top_srcdir)/src/theme.gresource.xml $(theme_resources)
-	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --manual-register --generate-header --c-name sol_resource $<
+theme-resources.h: $(top_srcdir)/theme/theme.gresource.xml $(theme_resources)
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/theme --manual-register --generate-header --c-name sol_resource $<
 
-theme-resources.c: $(top_srcdir)/src/theme.gresource.xml $(theme_resources)
-	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/src --manual-register --generate-source --c-name sol_resource $<
+theme-resources.c: $(top_srcdir)/theme/theme.gresource.xml $(theme_resources)
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/theme --manual-register --generate-source --c-name sol_resource $<
 
 AM_CFLAGS = \
 	-fstack-protector -Wall -pedantic \
