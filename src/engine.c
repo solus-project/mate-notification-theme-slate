@@ -314,11 +314,12 @@ __solus_public__ void set_notification_hints(GtkWindow *notif_window, GHashTable
 /**
  * Hooks for GModule initialisation
  */
-__solus_public__ const gchar *g_module_check_init(__solus_unused__ GModule *module)
+__solus_public__ const gchar *g_module_check_init(GModule *module)
 {
         if (!_initial_resource_loaded) {
                 sol_load_resources();
                 _initial_resource_loaded = true;
+                g_module_make_resident(module);
         }
         return NULL;
 }
