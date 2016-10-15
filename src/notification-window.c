@@ -50,7 +50,9 @@ static gchar *sol_string_replace(char **input, char *delim, char *replace)
 static gchar *sol_markup_escape(const char *input)
 {
         gchar *start = g_strdup(input);
-        start = sol_string_replace(&start, "&", "&amp;");
+        if (g_strrstr(input, "&amp;") == NULL) {
+                start = sol_string_replace(&start, "&", "&amp;");
+        }
         start = sol_string_replace(&start, "'", "&apos;");
         start = sol_string_replace(&start, "\"", "&quot;");
 
