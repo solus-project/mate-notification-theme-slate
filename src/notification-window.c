@@ -99,14 +99,6 @@ GtkWidget *sol_notification_window_new(UrlClickedCb cb)
         return ret;
 }
 
-/**
- * Handle cleanup
- */
-static void sol_notification_window_dispose(__solus_unused__ GObject *obj)
-{
-        /* skip for now */
-}
-
 static void close_clicked(SolNotificationWindow *self, __solus_unused__ gpointer userdata)
 {
         gtk_widget_destroy(GTK_WIDGET(self));
@@ -143,11 +135,7 @@ static void sol_notification_window_get_preferred_width_for_height(
  */
 static void sol_notification_window_class_init(SolNotificationWindowClass *klazz)
 {
-        GObjectClass *obj_class = G_OBJECT_CLASS(klazz);
         GtkWidgetClass *wid_class = GTK_WIDGET_CLASS(klazz);
-
-        /* gobject vtable hookup */
-        obj_class->dispose = sol_notification_window_dispose;
 
         /* widget vtable */
         wid_class->get_preferred_width = sol_notification_window_get_preferred_width;
