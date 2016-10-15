@@ -190,6 +190,16 @@ __solus_public__ gboolean get_always_stack(__solus_unused__ GtkWindow *notif_win
 }
 
 /**
+ * mate-notification-daemon always calls this even ifs not supported, so not
+ * exposing the method would result in the daemon segfaulting..
+ */
+__solus_public__ void set_notification_arrow(__solus_unused__ GtkWindow *notif_window,
+                                             __solus_unused__ gboolean visible,
+                                             __solus_unused__ int x, __solus_unused__ int y)
+{
+}
+
+/**
  * Hooks for GModule initialisation
  */
 __solus_public__ const gchar *g_module_check_init(__solus_unused__ GModule *module)
