@@ -7,7 +7,7 @@ EXTRA_DIST = \
 	${top_srcdir}/src/notification.ui \
 	${top_srcdir}/theme/3.20/theme.css \
 	${top_srcdir}/theme/3.20/theme_hc.css \
-	${top_srcdir}/src/notification.ui \
+	${top_srcdir}/src/notification.ui
 
 NULL =
 

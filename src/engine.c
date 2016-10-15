@@ -23,7 +23,23 @@ SOLUS_END_INCLUDES
 /**
  * We load and unload this to ensure we cause no problems to other plugins
  */
-static GtkStyleContext *_theme_style_context = NULL;
+static GtkCssProvider *_theme_style_provider = NULL;
+
+#define THEME_PREFIX "resource://com/solus-project/mate-notification-daemon-theme-solus"
+
+static gchar *sol_theme_form_theme_path(const gchar *suffix)
+{
+        guint minor_version = gtk_get_minor_version();
+
+        /* Prioritize 3.18 */
+        switch (minor_version) {
+        case 18:
+                return g_strdup_printf("%s/3.18/%s", THEME_PREFIX, suffix);
+        case 20:
+        default:
+                return g_strdup_printf("%s/3.20/%s", THEME_PREFIX, suffix);
+        }
+}
 
 /**
  * Load our theme assets into the global style context provider
@@ -32,6 +48,34 @@ __attribute__((constructor)) static bool sol_theme_load(void)
 {
         /* Load our resources in */
         sol_resource_register_resource();
+        GFile *file = NULL;
+        gchar *uri = NULL;
+        GtkCssProvider *prov = NULL;
+        GdkScreen *screen = NULL;
+
+        uri = sol_theme_form_theme_path("theme.css");
+        file = g_file_new_for_uri(uri);
+        if (!file) {
+                goto end;
+        }
+
+        prov = gtk_css_provider_new();
+        if (!gtk_css_provider_load_from_file(prov, file, NULL)) {
+                g_object_unref(prov);
+                goto end;
+        }
+        screen = gdk_screen_get_default();
+
+        gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(prov), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        _theme_style_provider = prov;
+end:
+        g_free(uri);
+        if (file) {
+                g_object_unref(file);
+        }
+        if (!_theme_style_provider) {
+                return false;
+        }
         return true;
 }
 
@@ -43,15 +87,16 @@ __attribute__((destructor)) static void sol_theme_unload(void)
         GdkScreen *screen = NULL;
 
         /* Currently no-op */
-        if (!_theme_style_context) {
+        if (!_theme_style_provider) {
                 goto resource_unload;
                 return;
         }
 
         screen = gdk_screen_get_default();
         gtk_style_context_remove_provider_for_screen(screen,
-                                                     GTK_STYLE_PROVIDER(_theme_style_context));
-        _theme_style_context = NULL;
+                                                     GTK_STYLE_PROVIDER(_theme_style_provider));
+        g_object_unref(_theme_style_provider);
+        _theme_style_provider = NULL;
 
 resource_unload:
         /* Ensure to unload resources */
