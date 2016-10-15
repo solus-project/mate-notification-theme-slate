@@ -107,8 +107,7 @@ static void sol_notification_window_dispose(__solus_unused__ GObject *obj)
         /* skip for now */
 }
 
-static void close_clicked(SolNotificationWindow *self,
-                          __solus_unused__ gpointer userdata)
+static void close_clicked(SolNotificationWindow *self, __solus_unused__ gpointer userdata)
 {
         gtk_widget_destroy(GTK_WIDGET(self));
 }
