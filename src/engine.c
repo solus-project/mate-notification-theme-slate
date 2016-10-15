@@ -26,6 +26,11 @@ SOLUS_END_INCLUDES
 static bool _initial_theme_loaded = false;
 
 /**
+ * Guard against double resource loads
+ */
+static bool _initial_resource_loaded = false;
+
+/**
  * We load and unload this to ensure we cause no problems to other plugins
  */
 static GtkCssProvider *_theme_style_provider = NULL;
@@ -80,16 +85,10 @@ end:
 /**
  * Load our theme assets into the global style context provider
  */
-__attribute__((constructor)) static bool sol_load_resources(void)
+__attribute__((constructor)) static void sol_load_resources(void)
 {
         /* Load our resources in */
         sol_resource_register_resource();
-
-        /* sol_set_theme("theme.css");
-        if (!_theme_style_provider) {
-                return false;
-        } */
-        return true;
 }
 
 /**
@@ -228,8 +227,9 @@ __solus_public__ void notification_tick(__solus_unused__ GtkWindow *notif_window
  */
 __solus_public__ const gchar *g_module_check_init(__solus_unused__ GModule *module)
 {
-        if (!sol_load_resources()) {
-                return "Failed to load theme resources";
+        if (!_initial_resource_loaded) {
+                sol_load_resources();
+                _initial_resource_loaded = true;
         }
         return NULL;
 }
