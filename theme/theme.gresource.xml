@@ -2,6 +2,8 @@
 <gresources>
         <gresource prefix="/com/solus-project/mate-notification-daemon-theme-solus">
                 <file preprocess="xml-stripblanks">notification.ui</file>
+                <file>3.18/theme.css</file>
+                <file>3.18/theme_hc.css</file>
                 <file>3.20/theme.css</file>
                 <file>3.20/theme_hc.css</file>
         </gresource>
