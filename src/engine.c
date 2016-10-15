@@ -286,8 +286,8 @@ __solus_public__ void notification_tick(__solus_unused__ GtkWindow *notif_window
 {
 }
 
-__solus_public__ void add_notification_actions(GtkWindow *notif_window, const char *label,
-                                               const char *key, GCallback cb)
+__solus_public__ void add_notification_action(GtkWindow *notif_window, const char *label,
+                                              const char *key, GCallback cb)
 {
         if (!notif_window) {
                 return;

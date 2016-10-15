@@ -71,8 +71,8 @@ void set_notification_arrow(GtkWindow *notif_window, gboolean visible, int x, in
 /**
  * Add a new action to the notification
  */
-void add_notification_actions(GtkWindow *notif_window, const char *label, const char *key,
-                              GCallback cb);
+void add_notification_action(GtkWindow *notif_window, const char *label, const char *key,
+                             GCallback cb);
 
 /**
  * Clear all notifications from the given notification
