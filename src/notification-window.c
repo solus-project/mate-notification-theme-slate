@@ -28,6 +28,7 @@ struct _SolNotificationWindow {
         GtkWidget *label_body;
         GtkWidget *button_close;
         GtkWidget *box_actions;
+        UrlClickedCb url_clicked;
 };
 
 /**
@@ -84,9 +85,15 @@ static gchar *sol_markup_escape(const char *input)
  *
  * Construct a new SolNotificationWindow widget
  */
-GtkWidget *sol_notification_window_new()
+GtkWidget *sol_notification_window_new(UrlClickedCb cb)
 {
-        return g_object_new(SOL_TYPE_NOTIFICATION_WINDOW, "type", GTK_WINDOW_POPUP, NULL);
+        GtkWidget *ret = g_object_new(SOL_TYPE_NOTIFICATION_WINDOW, "type", GTK_WINDOW_POPUP, NULL);
+        if (!ret) {
+                return NULL;
+        }
+        /* Couldn't be bothered with gobject properties. */
+        sol_notification_window_set_url_callback(SOL_NOTIFICATION_WINDOW(ret), cb);
+        return ret;
 }
 
 /**
@@ -102,6 +109,17 @@ static void close_clicked(__solus_unused__ SolNotificationWindow *self,
 {
         /* TODO: REMOVE!!! */
         gtk_main_quit();
+}
+
+/**
+ * Handle the clicking of links in labels
+ */
+static void link_activated(SolNotificationWindow *self, const char *url,
+                           __solus_unused__ gpointer userdata)
+{
+        if (self->url_clicked) {
+                self->url_clicked(GTK_WINDOW(self), url);
+        }
 }
 
 /**
@@ -138,7 +156,10 @@ static void sol_notification_window_class_init(SolNotificationWindowClass *klazz
         /* GtkTemplate */
         gtk_widget_class_set_template_from_resource(
             wid_class, "/com/solus-project/mate-notification-daemon-theme-solus/notification.ui");
+
+        /* Callbacks */
         gtk_widget_class_bind_template_callback(wid_class, close_clicked);
+        gtk_widget_class_bind_template_callback(wid_class, link_activated);
 
         /* Bind children to fields */
         gtk_widget_class_bind_template_child(wid_class, SolNotificationWindow, image_icon);
@@ -213,6 +234,14 @@ void sol_notification_window_set_pixbuf(SolNotificationWindow *self, GdkPixbuf *
         } else {
                 gtk_image_set_from_pixbuf(GTK_IMAGE(self->image_icon), pixbuf);
         }
+}
+
+void sol_notification_window_set_url_callback(SolNotificationWindow *self, UrlClickedCb cb)
+{
+        if (!self) {
+                return;
+        }
+        self->url_clicked = cb;
 }
 
 /*

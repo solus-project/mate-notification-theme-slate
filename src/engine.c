@@ -201,9 +201,9 @@ __solus_public__ void get_theme_info(char **theme_name, char **theme_ver, char *
         *homepage = g_strdup(PACKAGE_URL);
 }
 
-__solus_public__ GtkWindow *create_notification(__solus_unused__ UrlClickedCb cb)
+__solus_public__ GtkWindow *create_notification(UrlClickedCb cb)
 {
-        return GTK_WINDOW(sol_notification_window_new());
+        return GTK_WINDOW(sol_notification_window_new(cb));
 }
 
 __solus_public__ void destroy_notification(GtkWindow *notif_window)

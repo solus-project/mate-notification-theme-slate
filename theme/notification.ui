@@ -60,6 +60,7 @@
                 <attributes>
                   <attribute name="weight" value="semibold"/>
                 </attributes>
+                <signal name="activate-link" handler="link_activated" swapped="no"/>
                 <style>
                   <class name="notification-title"/>
                 </style>
@@ -81,6 +82,7 @@
                 <property name="wrap">True</property>
                 <property name="wrap_mode">word-char</property>
                 <property name="xalign">0</property>
+                <signal name="activate-link" handler="link_activated" swapped="no"/>
                 <style>
                   <class name="notification-body"/>
                 </style>

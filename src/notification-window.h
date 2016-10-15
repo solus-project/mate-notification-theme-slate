@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include "engine-api.h"
 #include <gtk/gtk.h>
 
 G_BEGIN_DECLS
@@ -30,7 +31,7 @@ typedef struct _SolNotificationWindowClass SolNotificationWindowClass;
 #define SOL_NOTIFICATION_WINDOW_GET_CLASS(o)                                                       \
         (G_TYPE_INSTANCE_GET_CLASS((o), SOL_TYPE_NOTIFICATION_WINDOW, SolNotificationWindowClass))
 
-GtkWidget *sol_notification_window_new(void);
+GtkWidget *sol_notification_window_new(UrlClickedCb url_clicked);
 
 GType sol_notification_window_get_type(void);
 
@@ -38,6 +39,8 @@ void sol_notification_window_set_text(SolNotificationWindow *window, const char 
                                       const char *body);
 
 void sol_notification_window_set_pixbuf(SolNotificationWindow *window, GdkPixbuf *pixbuf);
+
+void sol_notification_window_set_url_callback(SolNotificationWindow *window, UrlClickedCb cb);
 
 G_END_DECLS
 
