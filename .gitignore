@@ -22,7 +22,6 @@ stamp-*
 /theme-resources.c
 /theme-resources.h
 node_modules
-.nvmrc
 
 # Glade deposits these around the place..
 *.ui~
