@@ -135,11 +135,11 @@ static void sol_notification_window_init(SolNotificationWindow *self)
 void sol_notification_window_set_text(SolNotificationWindow *self, const char *summary,
                                       const char *body)
 {
-        /* TODO: Actual checking of markupibility! */
-
         /* Update summary */
         if (summary) {
-                gtk_label_set_text(GTK_LABEL(self->label_title), summary);
+                gchar *m_summary = g_markup_escape_text(summary, -1);
+                gtk_label_set_markup(GTK_LABEL(self->label_title), m_summary);
+                g_free(m_summary);
         } else {
                 /* Empty label */
                 gtk_label_set_text(GTK_LABEL(self->label_title), "");
@@ -147,7 +147,9 @@ void sol_notification_window_set_text(SolNotificationWindow *self, const char *s
 
         /* Update body */
         if (body) {
-                gtk_label_set_text(GTK_LABEL(self->label_body), body);
+                gchar *m_body = g_markup_escape_text(body, -1);
+                gtk_label_set_markup(GTK_LABEL(self->label_body), m_body);
+                g_free(m_body);
         } else {
                 /* Empty label */
                 gtk_label_set_text(GTK_LABEL(self->label_body), "");
