@@ -41,19 +41,14 @@ static gchar *sol_theme_form_theme_path(const gchar *suffix)
         }
 }
 
-/**
- * Load our theme assets into the global style context provider
- */
-__attribute__((constructor)) static bool sol_theme_load(void)
+static void sol_set_theme(const char *theme_portion)
 {
-        /* Load our resources in */
-        sol_resource_register_resource();
         GFile *file = NULL;
         gchar *uri = NULL;
         GtkCssProvider *prov = NULL;
         GdkScreen *screen = NULL;
 
-        uri = sol_theme_form_theme_path("theme.css");
+        uri = sol_theme_form_theme_path(theme_portion);
         file = g_file_new_for_uri(uri);
         if (!file) {
                 goto end;
@@ -73,9 +68,20 @@ end:
         if (file) {
                 g_object_unref(file);
         }
+}
+
+/**
+ * Load our theme assets into the global style context provider
+ */
+__attribute__((constructor)) static bool sol_theme_load(void)
+{
+        /* Load our resources in */
+        sol_resource_register_resource();
+
+        /* sol_set_theme("theme.css");
         if (!_theme_style_provider) {
                 return false;
-        }
+        } */
         return true;
 }
 
@@ -108,6 +114,7 @@ __solus_public__ gboolean theme_check_init(unsigned int major, unsigned int mino
 {
         /* Micro version may change with devel builds so don't test it */
         if (major == MATE_NOTIFYD_MAJOR_VERSION && minor == MATE_NOTIFYD_MINOR_VERSION) {
+                sol_set_theme("theme.css");
                 return TRUE;
         }
         return FALSE;
