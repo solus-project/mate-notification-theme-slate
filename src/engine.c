@@ -35,6 +35,11 @@ static bool _initial_resource_loaded = false;
  */
 static GtkCssProvider *_theme_style_provider = NULL;
 
+/**
+ * Signal for the GtkSettings connection
+ */
+static gulong _gtk_settings_con_id = 0L;
+
 #define THEME_PREFIX "resource://com/solus-project/mate-notification-daemon-theme-solus"
 
 static gchar *sol_theme_form_theme_path(const gchar *suffix)
@@ -51,6 +56,10 @@ static gchar *sol_theme_form_theme_path(const gchar *suffix)
         }
 }
 
+/**
+ * Set the theme to one of theme.css or theme_hc.css
+ * Care is taken to load the correct version of the theme
+ */
 static void sol_set_theme(const char *theme_portion)
 {
         GFile *file = NULL;
@@ -91,6 +100,52 @@ end:
 }
 
 /**
+ * Update our theme based on the currently loaded theme. This enables us to
+ * dynamically switch to the high contrast variant
+ */
+static void sol_theme_changed(void)
+{
+        GtkSettings *settings = NULL;
+        gchar *theme_nom = NULL;
+
+        settings = gtk_settings_get_default();
+        g_object_get(settings, "gtk-theme-name", &theme_nom, NULL);
+
+        if (g_str_equal(theme_nom, "HighContrast")) {
+                sol_set_theme("theme_hc.css");
+        } else {
+                sol_set_theme("theme.css");
+        }
+
+        g_free(theme_nom);
+}
+
+/**
+ * Set the theme for the first time, and hook up events to ensure we always
+ * set the right internal theme to match, i.e. HighContrast, etc.
+ */
+static void sol_initialize_theme(void)
+{
+        GtkSettings *settings = NULL;
+        gchar *theme_nom = NULL;
+
+        settings = gtk_settings_get_default();
+        g_object_get(settings, "gtk-theme-name", &theme_nom, NULL);
+
+        if (g_str_equal(theme_nom, "HighContrast")) {
+                sol_set_theme("theme_hc.css");
+        } else {
+                sol_set_theme("theme.css");
+        }
+        g_free(theme_nom);
+
+        _gtk_settings_con_id = g_signal_connect(settings,
+                                                "notify::gtk-theme-name",
+                                                G_CALLBACK(sol_theme_changed),
+                                                NULL);
+}
+
+/**
  * Load our theme assets into the global style context provider
  */
 __attribute__((constructor)) static void sol_load_resources(void)
@@ -105,12 +160,20 @@ __attribute__((constructor)) static void sol_load_resources(void)
 __attribute__((destructor)) static void sol_unload_resources(void)
 {
         GdkScreen *screen = NULL;
+        GtkSettings *settings = NULL;
 
-        /* Currently no-op */
+        /* Disconnect the notify on GtkSettings */
+        if (_gtk_settings_con_id > 0) {
+                settings = gtk_settings_get_default();
+                g_signal_handler_disconnect(settings, _gtk_settings_con_id);
+        }
+
+        /* No theme loaded? */
         if (!_theme_style_provider) {
                 goto resource_unload;
         }
 
+        /* Unload the CSS provider */
         screen = gdk_screen_get_default();
         gtk_style_context_remove_provider_for_screen(screen,
                                                      GTK_STYLE_PROVIDER(_theme_style_provider));
@@ -128,7 +191,7 @@ __solus_public__ gboolean theme_check_init(unsigned int major, unsigned int mino
         /* Micro version may change with devel builds so don't test it */
         if (major == MATE_NOTIFYD_MAJOR_VERSION && minor == MATE_NOTIFYD_MINOR_VERSION) {
                 if (!_initial_theme_loaded) {
-                        sol_set_theme("theme.css");
+                        sol_initialize_theme();
                         _initial_theme_loaded = true;
                 }
                 return TRUE;
