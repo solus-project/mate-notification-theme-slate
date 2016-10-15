@@ -200,6 +200,22 @@ __solus_public__ void set_notification_arrow(__solus_unused__ GtkWindow *notif_w
 }
 
 /**
+ * Currently a no-op as we don't yet have an SuRadialProgress
+ */
+__solus_public__ void set_notification_timeout(__solus_unused__ GtkWindow *notif_window,
+                                               __solus_unused__ glong timeout)
+{
+}
+
+/**
+ * Also waiting for SuRadialProgress, no-op
+ */
+__solus_public__ void notification_tick(__solus_unused__ GtkWindow *notif_window,
+                                        __solus_unused__ glong timeout)
+{
+}
+
+/**
  * Hooks for GModule initialisation
  */
 __solus_public__ const gchar *g_module_check_init(__solus_unused__ GModule *module)
