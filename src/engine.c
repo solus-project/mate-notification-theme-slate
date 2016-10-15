@@ -295,6 +295,14 @@ __solus_public__ void add_notification_action(GtkWindow *notif_window, const cha
         sol_notification_window_add_action(SOL_NOTIFICATION_WINDOW(notif_window), label, key, cb);
 }
 
+__solus_public__ void clear_notification_actions(GtkWindow *notif_window)
+{
+        if (!notif_window) {
+                return;
+        }
+        sol_notification_window_clear_actions(SOL_NOTIFICATION_WINDOW(notif_window));
+}
+
 /**
  * Hooks for GModule initialisation
  */

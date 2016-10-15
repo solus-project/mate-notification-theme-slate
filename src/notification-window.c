@@ -283,6 +283,13 @@ void sol_notification_window_add_action(SolNotificationWindow *self, const char 
         gtk_widget_show_all(self->box_actions);
 }
 
+void sol_notification_window_clear_actions(SolNotificationWindow *self)
+{
+        gtk_container_foreach(GTK_CONTAINER(self->box_actions),
+                              (GtkCallback)gtk_widget_destroy,
+                              NULL);
+}
+
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
  *

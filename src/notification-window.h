@@ -45,6 +45,8 @@ void sol_notification_window_set_url_callback(SolNotificationWindow *window, Url
 void sol_notification_window_add_action(SolNotificationWindow *window, const char *label,
                                         const char *key, GCallback cb);
 
+void sol_notification_window_clear_actions(SolNotificationWindow *window);
+
 G_END_DECLS
 
 /*
