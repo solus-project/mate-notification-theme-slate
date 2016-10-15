@@ -112,6 +112,15 @@ static void sol_notification_window_init(SolNotificationWindow *self)
 {
         /* Go build the UI */
         gtk_widget_init_template(GTK_WIDGET(self));
+        GdkScreen *screen = NULL;
+        GdkVisual *visual = NULL;
+
+        /* Attempt to set an RGBA visual */
+        screen = gtk_widget_get_screen(GTK_WIDGET(self));
+        visual = gdk_screen_get_rgba_visual(screen);
+        if (visual) {
+                gtk_widget_set_visual(GTK_WIDGET(self), visual);
+        }
 
         /* Play nice with the window manager */
         gtk_window_set_resizable(GTK_WINDOW(self), FALSE);
