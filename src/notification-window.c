@@ -128,6 +128,7 @@ static void sol_notification_window_init(SolNotificationWindow *self)
         gtk_window_set_skip_taskbar_hint(GTK_WINDOW(self), TRUE);
         gtk_window_set_decorated(GTK_WINDOW(self), FALSE);
         gtk_window_set_default_size(GTK_WINDOW(self), NOTIFICATION_SIZE, -1);
+        gtk_window_set_type_hint(GTK_WINDOW(self), GDK_WINDOW_TYPE_HINT_NOTIFICATION);
 }
 
 /*
