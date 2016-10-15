@@ -13,9 +13,9 @@
 
 #include "util.h"
 
-SOLUS_BEGIN_INCLUDES
+SOLUS_BEGIN_PEDANTIC
 #include "notification-window.h"
-SOLUS_END_INCLUDES
+SOLUS_END_PEDANTIC
 
 struct _SolNotificationWindowClass {
         GtkWindowClass parent_class;
@@ -253,9 +253,9 @@ static void sol_notification_action_clicked(GtkWidget *button, gpointer userdata
         ActionCb cb = NULL;
 
         key = g_object_get_data(G_OBJECT(button), "_notification_key");
-        SOLUS_BEGIN_INCLUDES
+        SOLUS_BEGIN_PEDANTIC
         cb = g_object_get_data(G_OBJECT(button), "_notification_cb");
-        SOLUS_END_INCLUDES
+        SOLUS_END_PEDANTIC
         if (cb) {
                 cb(self, key);
         }
@@ -272,9 +272,9 @@ void sol_notification_window_add_action(SolNotificationWindow *self, const char 
 
         g_object_set_data_full(G_OBJECT(button), "_notification_key", g_strdup(key), g_free);
         if (cb) {
-                SOLUS_BEGIN_INCLUDES
+                SOLUS_BEGIN_PEDANTIC
                 g_object_set_data(G_OBJECT(button), "_notification_cb", (void *)cb);
-                SOLUS_END_INCLUDES
+                SOLUS_END_PEDANTIC
         }
         g_signal_connect(button, "clicked", G_CALLBACK(sol_notification_action_clicked), self);
 

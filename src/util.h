@@ -22,14 +22,14 @@
  *
  * This provides a quick useful macro to wrap around the inclusion of GTK/GLib header files
  */
-#define _SOLUS_BEGIN_INCLUDES(COMP)                                                                \
+#define _SOLUS_BEGIN_PEDANTIC(COMP)                                                                \
         _Pragma(_STRINGIFY(COMP diagnostic push))                                                  \
             _Pragma(_STRINGIFY(COMP diagnostic ignored "-Wpedantic"))
 
 /**
  * End the includes block, i.e. by popping the diagnostic once more
  */
-#define _SOLUS_END_INCLUDES(COMP) _Pragma(_STRINGIFY(COMP diagnostic pop))
+#define _SOLUS_END_PEDANTIC(COMP) _Pragma(_STRINGIFY(COMP diagnostic pop))
 
 /**
  * Clang unfortunately also defines __GNUC__ meaning a second level of tests
@@ -40,23 +40,23 @@
  * Specifically use clang in pragma for older versions of Clang that don't understand
  * pragma GCC
  */
-#define SOLUS_BEGIN_INCLUDES _SOLUS_BEGIN_INCLUDES(clang)
-#define SOLUS_END_INCLUDES _SOLUS_END_INCLUDES(clang)
+#define SOLUS_BEGIN_PEDANTIC _SOLUS_BEGIN_PEDANTIC(clang)
+#define SOLUS_END_PEDANTIC _SOLUS_END_PEDANTIC(clang)
 #else /* __clang__ */
 
 /**
  * Specifically use GCC pragma for GCC
  */
-#define SOLUS_BEGIN_INCLUDES _SOLUS_BEGIN_INCLUDES(GCC)
-#define SOLUS_END_INCLUDES _SOLUS_END_INCLUDES(GCC)
+#define SOLUS_BEGIN_PEDANTIC _SOLUS_BEGIN_PEDANTIC(GCC)
+#define SOLUS_END_PEDANTIC _SOLUS_END_PEDANTIC(GCC)
 #endif
 
 #else /* __GNUC__ */
 /**
  * Unknown compiler, don't expose the functionality
  */
-#define SOLUS_BEGIN_INCLUDES
-#define SOLUS_END_INCLUDES
+#define SOLUS_BEGIN_PEDANTIC
+#define SOLUS_END_PEDANTIC
 #endif
 
 /* Useful macros */

@@ -12,11 +12,11 @@
 #include "config.h"
 #include "util.h"
 
-SOLUS_BEGIN_INCLUDES
+SOLUS_BEGIN_PEDANTIC
 #include "engine-api.h"
 #include "notification-window.h"
 #include "theme-resources.h"
-SOLUS_END_INCLUDES
+SOLUS_END_PEDANTIC
 
 #include <stdbool.h>
 
