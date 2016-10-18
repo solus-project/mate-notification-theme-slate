@@ -50,6 +50,11 @@ static gchar *sol_string_replace(char **input, char *delim, char *replace)
 static gchar *sol_markup_escape(const char *input)
 {
         gchar *start = g_strdup(input);
+        gchar *markup_safe = NULL;
+
+        if (g_strrstr(input, "<") != NULL && g_strrstr(input, ">") != NULL) {
+                goto safe_text;
+        }
         if (g_strrstr(input, "&amp;") == NULL) {
                 start = sol_string_replace(&start, "&", "&amp;");
         }
@@ -61,9 +66,10 @@ static gchar *sol_markup_escape(const char *input)
                 return start;
         }
 
+safe_text:
         /* Problem with the markup itself, pango won't render it. Strip everything
          * from it and return the clean string */
-        gchar *markup_safe = g_markup_escape_text(start, -1);
+        markup_safe = g_markup_escape_text(start, -1);
         g_free(start);
         return markup_safe;
 }
