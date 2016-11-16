@@ -52,21 +52,25 @@ static gchar *sol_markup_escape(const char *input)
         gchar *start = g_strdup(input);
         gchar *markup_safe = NULL;
 
+        /* It's legit markup */
         if (g_strrstr(input, "<") != NULL && g_strrstr(input, ">") != NULL) {
                 goto safe_text;
         }
+
         if (g_strrstr(input, "&amp;") == NULL) {
                 start = sol_string_replace(&start, "&", "&amp;");
         }
         start = sol_string_replace(&start, "'", "&apos;");
         start = sol_string_replace(&start, "\"", "&quot;");
+        start = sol_string_replace(&start, "<", "&lt;");
+        start = sol_string_replace(&start, ">", "&rt;");
 
+safe_text:
         /* Is this markup safe now ? */
         if (pango_parse_markup(start, -1, 0, NULL, NULL, NULL, NULL)) {
                 return start;
         }
 
-safe_text:
         /* Problem with the markup itself, pango won't render it. Strip everything
          * from it and return the clean string */
         markup_safe = g_markup_escape_text(start, -1);
