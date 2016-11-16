@@ -257,7 +257,7 @@ void sol_notification_window_add_action(SolNotificationWindow *self, const char 
 
         /* Future support for action-icons */
         if (self->action_icons) {
-                gchar *icon_name = sol_find_best_icon(label);
+                gchar *icon_name = sol_find_best_icon(key);
                 button = gtk_button_new_from_icon_name(icon_name, GTK_ICON_SIZE_MENU);
                 g_free(icon_name);
         } else {
