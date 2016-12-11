@@ -1,4 +1,4 @@
-mate-notification-theme-solus
+mate-notification-theme-slate
 =============================
 
 A MATE Notification Daemon theme, emulating the Arc-styled Budgie notifications
@@ -8,11 +8,11 @@ implementation within [Budgie](https://github.com/solus-project/budgie-desktop).
 This is a re-implementation for MATE, borrowing a subset of the Budgie theme,
 and providing a clean + stable theme engine.
 
-mate-notification-theme-solus is a [Solus project](https://solus-project.com/)
+mate-notification-theme-slate is a [Solus project](https://solus-project.com/)
 
 ![logo](https://build.solus-project.com/logo.png)
 
-![screenshot](https://raw.githubusercontent.com/solus-project/mate-notification-theme-solus/master/landing.png)
+![screenshot](https://raw.githubusercontent.com/solus-project/mate-notification-theme-slate/master/landing.png)
 
 Building
 --------
@@ -32,13 +32,13 @@ Clone the repository:
 
 ```bash
 
-    git clone https://github.com/solus-project/mate-notification-theme-solus.git
+    git clone https://github.com/solus-project/mate-notification-theme-slate.git
 ```
 
 Now build it:
 ```bash
 
-    cd mate-notification-theme-solus
+    cd mate-notification-theme-slate
     ./autogen.sh --prefix=/usr
     make -j$(($(getconf _NPROCESSORS_ONLN)+1))
     sudo make install
@@ -51,11 +51,15 @@ We'd like to see `mate-notification-daemon` enhanced, so we'll work with upstrea
 to add new features. Specifically, this theme has built-in handling for `action-icons`
 functionality, but we need to send a pull request upstream to enable all of the
 existing themes to support this, and to broadcast the functionality in the `d-bus`
-service.
+service:
+
+**Update**:
+
+ - https://github.com/mate-desktop/mate-notification-daemon/pull/114
 
 License
 -------
 
 Copyright © 2016 Ikey Doherty <ikey@solus-project.com>, Solus Project
 
-mate-notification-theme-solus is available under the terms of the `LGPL-2.1` license
+mate-notification-theme-slate is available under the terms of the `LGPL-2.1` license
