@@ -38,40 +38,40 @@ AM_CFLAGS = \
 
 
 # Mainly to avoid compiler warnings.
-noinst_LTLIBRARIES = libslate-mate-theme-assets.la
+noinst_LTLIBRARIES = libslate-assets.la
 
-libslate_mate_theme_assets_la_SOURCES = \
+libslate_assets_la_SOURCES = \
 	theme-resources.h		\
 	theme-resources.c
 
-libslate_mate_theme_assets_la_CFLAGS = \
+libslate_assets_la_CFLAGS = \
 	$(AM_CFLAGS)	 \
 	$(THEME_CFLAGS)	\
 	-Wno-pedantic
 
-libslate_mate_theme_assets_la_LIBADD = \
+libslate_assets_la_LIBADD = \
 	$(THEME_LIBS)
 
 # Main engine
-engine_LTLIBRARIES = libslate-mate-theme.la
+engine_LTLIBRARIES = libslate.la
 enginedir = $(libdir)/mate-notification-daemon/engines
 
-libslate_mate_theme_la_SOURCES =	\
+libslate_la_SOURCES =	\
 	src/engine-api.h		\
 	src/engine.c			\
 	src/notification-window.h	\
 	src/notification-window.c	\
 	src/util.h
 
-libslate_mate_theme_la_CFLAGS = \
+libslate_la_CFLAGS = \
 	$(AM_CFLAGS)	 \
 	$(THEME_CFLAGS)
 
-libslate_mate_theme_la_LIBADD = \
-	libslate-mate-theme-assets.la \
+libslate_la_LIBADD = \
+	libslate-assets.la \
 	$(THEME_LIBS)
 
-libslate_mate_theme_la_LDFLAGS = 	\
+libslate_la_LDFLAGS = 	\
 	-module 		 	\
 	-avoid-version	 	\
 	-fvisibility=hidden
