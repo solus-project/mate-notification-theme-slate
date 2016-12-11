@@ -30,12 +30,12 @@ GtkWidget *slate_notification_window_new(UrlClickedCb url_clicked);
 void slate_notification_window_destroy(SlateNotificationWindow *window);
 
 void slate_notification_window_set_text(SlateNotificationWindow *window, const char *summary,
-                                      const char *body);
+                                        const char *body);
 
 void slate_notification_window_set_pixbuf(SlateNotificationWindow *window, GdkPixbuf *pixbuf);
 
 void slate_notification_window_add_action(SlateNotificationWindow *window, const char *label,
-                                        const char *key, GCallback cb);
+                                          const char *key, GCallback cb);
 
 void slate_notification_window_clear_actions(SlateNotificationWindow *window);
 

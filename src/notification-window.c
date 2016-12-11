@@ -171,7 +171,7 @@ GtkWidget *slate_notification_window_new(UrlClickedCb cb)
 }
 
 void slate_notification_window_set_text(SlateNotificationWindow *self, const char *summary,
-                                      const char *body)
+                                        const char *body)
 {
         /* Update summary */
         if (summary) {
@@ -255,7 +255,7 @@ static gchar *slate_find_best_icon(const gchar *label)
 }
 
 void slate_notification_window_add_action(SlateNotificationWindow *self, const char *label,
-                                        const char *key, GCallback cb)
+                                          const char *key, GCallback cb)
 {
         GtkWidget *button = NULL;
 
