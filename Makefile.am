@@ -23,10 +23,10 @@ CLEANFILES = \
 
 # resources
 theme-resources.h: $(top_srcdir)/theme/theme.gresource.xml $(theme_resources)
-	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/theme --manual-register --generate-header --c-name sol_resource $<
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/theme --manual-register --generate-header --c-name slate_resource $<
 
 theme-resources.c: $(top_srcdir)/theme/theme.gresource.xml $(theme_resources)
-	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/theme --manual-register --generate-source --c-name sol_resource $<
+	glib-compile-resources --target=$@ --sourcedir=$(top_srcdir)/theme --manual-register --generate-source --c-name slate_resource $<
 
 AM_CFLAGS = \
 	-fstack-protector -Wall -pedantic \
