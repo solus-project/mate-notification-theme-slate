@@ -1,5 +1,5 @@
 /*
- * This file is part of mate-notification-theme-solus
+ * This file is part of mate-notification-theme-mate
  *
  * Copyright © 2016 Ikey Doherty <ikey@solus-project.com>
  *

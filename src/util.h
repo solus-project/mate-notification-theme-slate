@@ -1,5 +1,5 @@
 /*
- * This file is part of mate-notification-theme-solus
+ * This file is part of mate-notification-theme-mate
  *
  * Copyright © 2016 Ikey Doherty <ikey@solus-project.com>
  *
@@ -22,14 +22,14 @@
  *
  * This provides a quick useful macro to wrap around the inclusion of GTK/GLib header files
  */
-#define _SOLUS_BEGIN_PEDANTIC(COMP)                                                                \
+#define _SLATE_BEGIN_PEDANTIC(COMP)                                                                \
         _Pragma(_STRINGIFY(COMP diagnostic push))                                                  \
             _Pragma(_STRINGIFY(COMP diagnostic ignored "-Wpedantic"))
 
 /**
  * End the includes block, i.e. by popping the diagnostic once more
  */
-#define _SOLUS_END_PEDANTIC(COMP) _Pragma(_STRINGIFY(COMP diagnostic pop))
+#define _SLATE_END_PEDANTIC(COMP) _Pragma(_STRINGIFY(COMP diagnostic pop))
 
 /**
  * Clang unfortunately also defines __GNUC__ meaning a second level of tests
@@ -40,23 +40,23 @@
  * Specifically use clang in pragma for older versions of Clang that don't understand
  * pragma GCC
  */
-#define SOLUS_BEGIN_PEDANTIC _SOLUS_BEGIN_PEDANTIC(clang)
-#define SOLUS_END_PEDANTIC _SOLUS_END_PEDANTIC(clang)
+#define SLATE_BEGIN_PEDANTIC _SLATE_BEGIN_PEDANTIC(clang)
+#define SLATE_END_PEDANTIC _SLATE_END_PEDANTIC(clang)
 #else /* __clang__ */
 
 /**
  * Specifically use GCC pragma for GCC
  */
-#define SOLUS_BEGIN_PEDANTIC _SOLUS_BEGIN_PEDANTIC(GCC)
-#define SOLUS_END_PEDANTIC _SOLUS_END_PEDANTIC(GCC)
+#define SLATE_BEGIN_PEDANTIC _SLATE_BEGIN_PEDANTIC(GCC)
+#define SLATE_END_PEDANTIC _SLATE_END_PEDANTIC(GCC)
 #endif
 
 #else /* __GNUC__ */
 /**
  * Unknown compiler, don't expose the functionality
  */
-#define SOLUS_BEGIN_PEDANTIC
-#define SOLUS_END_PEDANTIC
+#define SLATE_BEGIN_PEDANTIC
+#define SLATE_END_PEDANTIC
 #endif
 
 /* Useful macros */
@@ -64,13 +64,13 @@
 /**
  * Useful during development to silence compiler warnings
  */
-#define __solus_unused__ __attribute__((unused))
+#define __slate_unused__ __attribute__((unused))
 
 /**
  * All symbols are hidden by default so must be explicitly be made public
  * to define the ABI
  */
-#define __solus_public__ __attribute__((visibility("default")))
+#define __slate_public__ __attribute__((visibility("default")))
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html

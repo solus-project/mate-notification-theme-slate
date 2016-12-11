@@ -1,5 +1,5 @@
 /*
- * This file is part of mate-notification-theme-solus
+ * This file is part of mate-notification-theme-mate
  *
  * Copyright © 2016 Ikey Doherty <ikey@solus-project.com>
  *
@@ -12,11 +12,11 @@
 #include "config.h"
 #include "util.h"
 
-SOLUS_BEGIN_PEDANTIC
+SLATE_BEGIN_PEDANTIC
 #include "engine-api.h"
 #include "notification-window.h"
 #include "theme-resources.h"
-SOLUS_END_PEDANTIC
+SLATE_END_PEDANTIC
 
 #include <stdbool.h>
 
@@ -40,9 +40,9 @@ static GtkCssProvider *_theme_style_provider = NULL;
  */
 static gulong _gtk_settings_con_id = 0L;
 
-#define THEME_PREFIX "resource://com/solus-project/mate-notification-daemon-theme-solus"
+#define THEME_PREFIX "resource://com/solus-project/mate-notification-daemon-theme-slate"
 
-static gchar *sol_theme_form_theme_path(const gchar *suffix)
+static gchar *slate_theme_form_theme_path(const gchar *suffix)
 {
         guint minor_version = gtk_get_minor_version();
 
@@ -60,14 +60,14 @@ static gchar *sol_theme_form_theme_path(const gchar *suffix)
  * Set the theme to one of theme.css or theme_hc.css
  * Care is taken to load the correct version of the theme
  */
-static void sol_set_theme(const char *theme_portion)
+static void slate_set_theme(const char *theme_portion)
 {
         GFile *file = NULL;
         gchar *uri = NULL;
         GtkCssProvider *prov = NULL;
         GdkScreen *screen = NULL;
 
-        uri = sol_theme_form_theme_path(theme_portion);
+        uri = slate_theme_form_theme_path(theme_portion);
         file = g_file_new_for_uri(uri);
         if (!file) {
                 goto end;
@@ -103,7 +103,7 @@ end:
  * Update our theme based on the currently loaded theme. This enables us to
  * dynamically switch to the high contrast variant
  */
-static void sol_theme_changed(void)
+static void slate_theme_changed(void)
 {
         GtkSettings *settings = NULL;
         gchar *theme_nom = NULL;
@@ -112,9 +112,9 @@ static void sol_theme_changed(void)
         g_object_get(settings, "gtk-theme-name", &theme_nom, NULL);
 
         if (g_str_equal(theme_nom, "HighContrast")) {
-                sol_set_theme("theme_hc.css");
+                slate_set_theme("theme_hc.css");
         } else {
-                sol_set_theme("theme.css");
+                slate_set_theme("theme.css");
         }
 
         g_free(theme_nom);
@@ -124,7 +124,7 @@ static void sol_theme_changed(void)
  * Set the theme for the first time, and hook up events to ensure we always
  * set the right internal theme to match, i.e. HighContrast, etc.
  */
-static void sol_initialize_theme(void)
+static void slate_initialize_theme(void)
 {
         GtkSettings *settings = NULL;
 
@@ -132,25 +132,25 @@ static void sol_initialize_theme(void)
 
         _gtk_settings_con_id = g_signal_connect(settings,
                                                 "notify::gtk-theme-name",
-                                                G_CALLBACK(sol_theme_changed),
+                                                G_CALLBACK(slate_theme_changed),
                                                 NULL);
         /* Now update theme settings */
-        sol_theme_changed();
+        slate_theme_changed();
 }
 
 /**
  * Load our theme assets into the global style context provider
  */
-static void sol_load_resources(void)
+static void slate_load_resources(void)
 {
         /* Load our resources in */
-        sol_resource_register_resource();
+        slate_resource_register_resource();
 }
 
 /**
  * Unload the theme from the global style context provider
  */
-static void sol_unload_resources(void)
+static void slate_unload_resources(void)
 {
         GdkScreen *screen = NULL;
         GtkSettings *settings = NULL;
@@ -175,16 +175,16 @@ static void sol_unload_resources(void)
 
 resource_unload:
         /* Ensure to unload resources */
-        sol_resource_unregister_resource();
+        slate_resource_unregister_resource();
 }
 
-__solus_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
-                                           __solus_unused__ unsigned int micro)
+__slate_public__ gboolean theme_check_init(unsigned int major, unsigned int minor,
+                                           __slate_unused__ unsigned int micro)
 {
         /* Micro version may change with devel builds so don't test it */
         if (major == MATE_NOTIFYD_MAJOR_VERSION && minor == MATE_NOTIFYD_MINOR_VERSION) {
                 if (!_initial_theme_loaded) {
-                        sol_initialize_theme();
+                        slate_initialize_theme();
                         _initial_theme_loaded = true;
                 }
                 return TRUE;
@@ -192,10 +192,10 @@ __solus_public__ gboolean theme_check_init(unsigned int major, unsigned int mino
         return FALSE;
 }
 
-__solus_public__ void get_theme_info(char **theme_name, char **theme_ver, char **author,
+__slate_public__ void get_theme_info(char **theme_name, char **theme_ver, char **author,
                                      char **homepage)
 {
-        *theme_name = g_strdup("Solus Theme");
+        *theme_name = g_strdup("Slate Theme");
         *theme_ver = g_strdup(PACKAGE_VERSION);
         *author = g_strdup("Ikey Doherty");
         *homepage = g_strdup(PACKAGE_URL);
@@ -204,19 +204,19 @@ __solus_public__ void get_theme_info(char **theme_name, char **theme_ver, char *
 /**
  * Convenience wrapper
  */
-static inline SolNotificationWindow *_get_notification_window(GtkWindow *window)
+static inline SlateNotificationWindow *_get_notification_window(GtkWindow *window)
 {
-        SolNotificationWindow *real_window =
+        SlateNotificationWindow *real_window =
             g_object_get_data(G_OBJECT(window), "_notification_data");
         return real_window;
 }
 
-__solus_public__ GtkWindow *create_notification(UrlClickedCb cb)
+__slate_public__ GtkWindow *create_notification(UrlClickedCb cb)
 {
-        return GTK_WINDOW(sol_notification_window_new(cb));
+        return GTK_WINDOW(slate_notification_window_new(cb));
 }
 
-__solus_public__ void destroy_notification(GtkWindow *notif_window)
+__slate_public__ void destroy_notification(GtkWindow *notif_window)
 {
         if (!notif_window) {
                 return;
@@ -225,7 +225,7 @@ __solus_public__ void destroy_notification(GtkWindow *notif_window)
         gtk_widget_destroy(GTK_WIDGET(notif_window));
 }
 
-__solus_public__ void show_notification(GtkWindow *notif_window)
+__slate_public__ void show_notification(GtkWindow *notif_window)
 {
         if (!notif_window) {
                 return;
@@ -233,7 +233,7 @@ __solus_public__ void show_notification(GtkWindow *notif_window)
         gtk_widget_show(GTK_WIDGET(notif_window));
 }
 
-__solus_public__ void hide_notification(GtkWindow *notif_window)
+__slate_public__ void hide_notification(GtkWindow *notif_window)
 {
         if (!notif_window) {
                 return;
@@ -241,7 +241,7 @@ __solus_public__ void hide_notification(GtkWindow *notif_window)
         gtk_widget_hide(GTK_WIDGET(notif_window));
 }
 
-__solus_public__ void move_notification(GtkWindow *notif_window, int x, int y)
+__slate_public__ void move_notification(GtkWindow *notif_window, int x, int y)
 {
         if (!notif_window) {
                 return;
@@ -249,26 +249,26 @@ __solus_public__ void move_notification(GtkWindow *notif_window, int x, int y)
         gtk_window_move(notif_window, x, y);
 }
 
-__solus_public__ void set_notification_text(GtkWindow *notif_window, const char *summary,
+__slate_public__ void set_notification_text(GtkWindow *notif_window, const char *summary,
                                             const char *body)
 {
         if (!notif_window) {
                 return;
         }
-        SolNotificationWindow *window = _get_notification_window(notif_window);
-        sol_notification_window_set_text(window, summary, body);
+        SlateNotificationWindow *window = _get_notification_window(notif_window);
+        slate_notification_window_set_text(window, summary, body);
 }
 
-__solus_public__ void set_notification_icon(GtkWindow *notif_window, GdkPixbuf *pixbuf)
+__slate_public__ void set_notification_icon(GtkWindow *notif_window, GdkPixbuf *pixbuf)
 {
         if (!notif_window) {
                 return;
         }
-        SolNotificationWindow *window = _get_notification_window(notif_window);
-        sol_notification_window_set_pixbuf(window, pixbuf);
+        SlateNotificationWindow *window = _get_notification_window(notif_window);
+        slate_notification_window_set_pixbuf(window, pixbuf);
 }
 
-__solus_public__ gboolean get_always_stack(__solus_unused__ GtkWindow *notif_window)
+__slate_public__ gboolean get_always_stack(__slate_unused__ GtkWindow *notif_window)
 {
         return TRUE;
 }
@@ -277,70 +277,70 @@ __solus_public__ gboolean get_always_stack(__solus_unused__ GtkWindow *notif_win
  * mate-notification-daemon always calls this even ifs not supported, so not
  * exposing the method would result in the daemon segfaulting..
  */
-__solus_public__ void set_notification_arrow(__solus_unused__ GtkWindow *notif_window,
-                                             __solus_unused__ gboolean visible,
-                                             __solus_unused__ int x, __solus_unused__ int y)
+__slate_public__ void set_notification_arrow(__slate_unused__ GtkWindow *notif_window,
+                                             __slate_unused__ gboolean visible,
+                                             __slate_unused__ int x, __slate_unused__ int y)
 {
 }
 
 /**
  * Currently a no-op as we don't yet have an SuRadialProgress
  */
-__solus_public__ void set_notification_timeout(__solus_unused__ GtkWindow *notif_window,
-                                               __solus_unused__ glong timeout)
+__slate_public__ void set_notification_timeout(__slate_unused__ GtkWindow *notif_window,
+                                               __slate_unused__ glong timeout)
 {
 }
 
 /**
  * Also waiting for SuRadialProgress, no-op
  */
-__solus_public__ void notification_tick(__solus_unused__ GtkWindow *notif_window,
-                                        __solus_unused__ glong timeout)
+__slate_public__ void notification_tick(__slate_unused__ GtkWindow *notif_window,
+                                        __slate_unused__ glong timeout)
 {
 }
 
-__solus_public__ void add_notification_action(GtkWindow *notif_window, const char *label,
+__slate_public__ void add_notification_action(GtkWindow *notif_window, const char *label,
                                               const char *key, GCallback cb)
 {
         if (!notif_window) {
                 return;
         }
-        SolNotificationWindow *window = _get_notification_window(notif_window);
-        sol_notification_window_add_action(window, label, key, cb);
+        SlateNotificationWindow *window = _get_notification_window(notif_window);
+        slate_notification_window_add_action(window, label, key, cb);
 }
 
-__solus_public__ void clear_notification_actions(GtkWindow *notif_window)
+__slate_public__ void clear_notification_actions(GtkWindow *notif_window)
 {
         if (!notif_window) {
                 return;
         }
-        SolNotificationWindow *window = _get_notification_window(notif_window);
-        sol_notification_window_clear_actions(window);
+        SlateNotificationWindow *window = _get_notification_window(notif_window);
+        slate_notification_window_clear_actions(window);
 }
 
-__solus_public__ void set_notification_hints(GtkWindow *notif_window, GHashTable *hints)
+__slate_public__ void set_notification_hints(GtkWindow *notif_window, GHashTable *hints)
 {
         if (!notif_window) {
                 return;
         }
-        SolNotificationWindow *window = _get_notification_window(notif_window);
-        sol_notification_window_set_hints(window, hints);
+        SlateNotificationWindow *window = _get_notification_window(notif_window);
+        slate_notification_window_set_hints(window, hints);
 }
 /**
  * Hooks for GModule initialisation
  */
-__solus_public__ const gchar *g_module_check_init(__attribute__((unused)) GModule *module)
+__slate_public__ const gchar *g_module_check_init(__attribute__((unused)) GModule *module)
 {
         if (!_initial_resource_loaded) {
-                sol_load_resources();
+                slate_load_resources();
                 _initial_resource_loaded = true;
         }
         return NULL;
 }
 
-__solus_public__ void g_module_unload(__solus_unused__ GModule *module)
+__slate_public__ void g_module_unload(__slate_unused__ GModule *module)
 {
-        sol_unload_resources();
+        slate_unload_resources();
 }
 
 /*

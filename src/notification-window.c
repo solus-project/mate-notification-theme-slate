@@ -1,5 +1,5 @@
 /*
- * This file is part of mate-notification-theme-solus
+ * This file is part of mate-notification-theme-mate
  *
  * Copyright © 2016 Ikey Doherty <ikey@solus-project.com>
  *
@@ -13,9 +13,9 @@
 
 #include "util.h"
 
-SOLUS_BEGIN_PEDANTIC
+SLATE_BEGIN_PEDANTIC
 #include "notification-window.h"
-SOLUS_END_PEDANTIC
+SLATE_END_PEDANTIC
 
 typedef void (*ActionCb)(GtkWindow *notif_window, const char *key);
 
@@ -27,7 +27,7 @@ typedef void (*ActionCb)(GtkWindow *notif_window, const char *key);
 /*
  * Replace one string with another in the given input text
  */
-static gchar *sol_string_replace(char **input, char *delim, char *replace)
+static gchar *slate_string_replace(char **input, char *delim, char *replace)
 {
         gchar **splits = g_strsplit(*input, delim, -1);
         gchar *repl = g_strjoinv(replace, splits);
@@ -47,7 +47,7 @@ static gchar *sol_string_replace(char **input, char *delim, char *replace)
  * If Pango is still unhappy with the string, we strip it and return a
  * sanitized version.
  */
-static gchar *sol_markup_escape(const char *input)
+static gchar *slate_markup_escape(const char *input)
 {
         gchar *start = g_strdup(input);
         gchar *markup_safe = NULL;
@@ -58,12 +58,12 @@ static gchar *sol_markup_escape(const char *input)
         }
 
         if (g_strrstr(input, "&amp;") == NULL) {
-                start = sol_string_replace(&start, "&", "&amp;");
+                start = slate_string_replace(&start, "&", "&amp;");
         }
-        start = sol_string_replace(&start, "'", "&apos;");
-        start = sol_string_replace(&start, "\"", "&quot;");
-        start = sol_string_replace(&start, "<", "&lt;");
-        start = sol_string_replace(&start, ">", "&rt;");
+        start = slate_string_replace(&start, "'", "&apos;");
+        start = slate_string_replace(&start, "\"", "&quot;");
+        start = slate_string_replace(&start, "<", "&lt;");
+        start = slate_string_replace(&start, ">", "&rt;");
 
 safe_text:
         /* Is this markup safe now ? */
@@ -78,7 +78,7 @@ safe_text:
         return markup_safe;
 }
 
-static void close_clicked(SolNotificationWindow *self, __solus_unused__ gpointer userdata)
+static void close_clicked(SlateNotificationWindow *self, __slate_unused__ gpointer userdata)
 {
         gtk_widget_destroy(GTK_WIDGET(self->window));
 }
@@ -86,46 +86,46 @@ static void close_clicked(SolNotificationWindow *self, __solus_unused__ gpointer
 /**
  * Handle the clicking of links in labels
  */
-static void link_activated(SolNotificationWindow *self, const char *url,
-                           __solus_unused__ gpointer userdata)
+static void link_activated(SlateNotificationWindow *self, const char *url,
+                           __slate_unused__ gpointer userdata)
 {
         if (self->url_clicked) {
                 self->url_clicked(GTK_WINDOW(self->window), url);
         }
 }
 
-void sol_notification_window_destroy(SolNotificationWindow *window)
+void slate_notification_window_destroy(SlateNotificationWindow *window)
 {
         g_free(window);
 }
 
 /**
- * sol_notification_window_new:
+ * slate_notification_window_new:
  *
- * Construct a new SolNotificationWindow widget
+ * Construct a new SlateNotificationWindow widget
  */
-GtkWidget *sol_notification_window_new(UrlClickedCb cb)
+GtkWidget *slate_notification_window_new(UrlClickedCb cb)
 {
         GtkWidget *window = NULL;
-        SolNotificationWindow *self = NULL;
+        SlateNotificationWindow *self = NULL;
         GtkBuilder *builder = NULL;
         GdkScreen *screen = NULL;
         GdkVisual *visual = NULL;
 
-        self = g_new0(SolNotificationWindow, 1);
+        self = g_new0(SlateNotificationWindow, 1);
         self->url_clicked = cb;
 
         /* Init UI */
         builder = gtk_builder_new_from_resource(
-            "/com/solus-project/mate-notification-daemon-theme-solus/notification.ui");
+            "/com/solus-project/mate-notification-daemon-theme-slate/notification.ui");
 
         /* Go build the UI */
         self->window = window =
-            GTK_WIDGET(gtk_builder_get_object(builder, "SolNotificationWindow"));
+            GTK_WIDGET(gtk_builder_get_object(builder, "SlateNotificationWindow"));
         g_object_set_data_full(G_OBJECT(self->window),
                                "_notification_data",
                                self,
-                               (GDestroyNotify)sol_notification_window_destroy);
+                               (GDestroyNotify)slate_notification_window_destroy);
         self->image_icon = GTK_WIDGET(gtk_builder_get_object(builder, "image_icon"));
         self->label_title = GTK_WIDGET(gtk_builder_get_object(builder, "label_title"));
         self->label_body = GTK_WIDGET(gtk_builder_get_object(builder, "label_body"));
@@ -163,19 +163,19 @@ GtkWidget *sol_notification_window_new(UrlClickedCb cb)
         gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
 
         /* Ensure we're clean pre-show */
-        sol_notification_window_set_text(self, NULL, NULL);
-        sol_notification_window_set_pixbuf(self, NULL);
+        slate_notification_window_set_text(self, NULL, NULL);
+        slate_notification_window_set_pixbuf(self, NULL);
         self->action_icons = FALSE;
 
         return self->window;
 }
 
-void sol_notification_window_set_text(SolNotificationWindow *self, const char *summary,
+void slate_notification_window_set_text(SlateNotificationWindow *self, const char *summary,
                                       const char *body)
 {
         /* Update summary */
         if (summary) {
-                gchar *m_summary = sol_markup_escape(summary);
+                gchar *m_summary = slate_markup_escape(summary);
                 gtk_label_set_markup(GTK_LABEL(self->label_title), m_summary);
                 g_free(m_summary);
         } else {
@@ -185,7 +185,7 @@ void sol_notification_window_set_text(SolNotificationWindow *self, const char *s
 
         /* Update body */
         if (body) {
-                gchar *m_body = sol_markup_escape(body);
+                gchar *m_body = slate_markup_escape(body);
                 gtk_label_set_markup(GTK_LABEL(self->label_body), m_body);
                 g_free(m_body);
         } else {
@@ -194,7 +194,7 @@ void sol_notification_window_set_text(SolNotificationWindow *self, const char *s
         }
 }
 
-void sol_notification_window_set_pixbuf(SolNotificationWindow *self, GdkPixbuf *pixbuf)
+void slate_notification_window_set_pixbuf(SlateNotificationWindow *self, GdkPixbuf *pixbuf)
 {
         /* Gracefully handle missing pixbuf */
         if (!pixbuf) {
@@ -207,7 +207,7 @@ void sol_notification_window_set_pixbuf(SolNotificationWindow *self, GdkPixbuf *
         gtk_image_set_pixel_size(GTK_IMAGE(self->image_icon), 48);
 }
 
-void sol_notification_window_set_url_callback(SolNotificationWindow *self, UrlClickedCb cb)
+void slate_notification_window_set_url_callback(SlateNotificationWindow *self, UrlClickedCb cb)
 {
         if (!self) {
                 return;
@@ -215,16 +215,16 @@ void sol_notification_window_set_url_callback(SolNotificationWindow *self, UrlCl
         self->url_clicked = cb;
 }
 
-static void sol_notification_action_clicked(GtkWidget *button, gpointer userdata)
+static void slate_notification_action_clicked(GtkWidget *button, gpointer userdata)
 {
-        SolNotificationWindow *self = userdata;
+        SlateNotificationWindow *self = userdata;
         const gchar *key = NULL;
         ActionCb cb = NULL;
 
         key = g_object_get_data(G_OBJECT(button), "_notification_key");
-        SOLUS_BEGIN_PEDANTIC
+        SLATE_BEGIN_PEDANTIC
         cb = g_object_get_data(G_OBJECT(button), "_notification_cb");
-        SOLUS_END_PEDANTIC
+        SLATE_END_PEDANTIC
         if (cb) {
                 cb(GTK_WINDOW(self->window), key);
         }
@@ -234,7 +234,7 @@ static void sol_notification_action_clicked(GtkWidget *button, gpointer userdata
  * Attempt to find the best icon for the named icon, preferring symbolic
  * versions if they're in the theme
  */
-static gchar *sol_find_best_icon(const gchar *label)
+static gchar *slate_find_best_icon(const gchar *label)
 {
         GtkIconTheme *icon_theme = NULL;
         gchar *tmp = NULL;
@@ -254,14 +254,14 @@ static gchar *sol_find_best_icon(const gchar *label)
         return g_strdup(label);
 }
 
-void sol_notification_window_add_action(SolNotificationWindow *self, const char *label,
+void slate_notification_window_add_action(SlateNotificationWindow *self, const char *label,
                                         const char *key, GCallback cb)
 {
         GtkWidget *button = NULL;
 
         /* Future support for action-icons */
         if (self->action_icons) {
-                gchar *icon_name = sol_find_best_icon(key);
+                gchar *icon_name = slate_find_best_icon(key);
                 button = gtk_button_new_from_icon_name(icon_name, GTK_ICON_SIZE_MENU);
                 g_free(icon_name);
         } else {
@@ -273,18 +273,18 @@ void sol_notification_window_add_action(SolNotificationWindow *self, const char 
 
         g_object_set_data_full(G_OBJECT(button), "_notification_key", g_strdup(key), g_free);
         if (cb) {
-                SOLUS_BEGIN_PEDANTIC
+                SLATE_BEGIN_PEDANTIC
                 g_object_set_data(G_OBJECT(button), "_notification_cb", (void *)cb);
-                SOLUS_END_PEDANTIC
+                SLATE_END_PEDANTIC
         }
-        g_signal_connect(button, "clicked", G_CALLBACK(sol_notification_action_clicked), self);
+        g_signal_connect(button, "clicked", G_CALLBACK(slate_notification_action_clicked), self);
 
         gtk_container_add(GTK_CONTAINER(self->box_actions), button);
 
         gtk_widget_show_all(self->box_actions);
 }
 
-void sol_notification_window_clear_actions(SolNotificationWindow *self)
+void slate_notification_window_clear_actions(SlateNotificationWindow *self)
 {
         gtk_container_foreach(GTK_CONTAINER(self->box_actions),
                               (GtkCallback)gtk_widget_destroy,
@@ -296,7 +296,7 @@ void sol_notification_window_clear_actions(SolNotificationWindow *self)
  * in future mate-notification-daemon will broadcast action-icons as a
  * capability.
  */
-void sol_notification_window_set_hints(SolNotificationWindow *self, GHashTable *hints)
+void slate_notification_window_set_hints(SlateNotificationWindow *self, GHashTable *hints)
 {
         GValue *hash = NULL;
 

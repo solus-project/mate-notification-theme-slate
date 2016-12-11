@@ -1,5 +1,5 @@
 /*
- * This file is part of mate-notification-theme-solus
+ * This file is part of mate-notification-theme-mate
  *
  * Copyright © 2016 Ikey Doherty <ikey@solus-project.com>
  *
@@ -14,7 +14,7 @@
 #include "engine-api.h"
 #include <gtk/gtk.h>
 
-typedef struct SolNotificationWindow {
+typedef struct SlateNotificationWindow {
         GtkWidget *window;
         GtkWidget *image_icon;
         GtkWidget *label_title;
@@ -23,23 +23,23 @@ typedef struct SolNotificationWindow {
         GtkWidget *box_actions;
         UrlClickedCb url_clicked;
         gboolean action_icons;
-} SolNotificationWindow;
+} SlateNotificationWindow;
 
-GtkWidget *sol_notification_window_new(UrlClickedCb url_clicked);
+GtkWidget *slate_notification_window_new(UrlClickedCb url_clicked);
 
-void sol_notification_window_destroy(SolNotificationWindow *window);
+void slate_notification_window_destroy(SlateNotificationWindow *window);
 
-void sol_notification_window_set_text(SolNotificationWindow *window, const char *summary,
+void slate_notification_window_set_text(SlateNotificationWindow *window, const char *summary,
                                       const char *body);
 
-void sol_notification_window_set_pixbuf(SolNotificationWindow *window, GdkPixbuf *pixbuf);
+void slate_notification_window_set_pixbuf(SlateNotificationWindow *window, GdkPixbuf *pixbuf);
 
-void sol_notification_window_add_action(SolNotificationWindow *window, const char *label,
+void slate_notification_window_add_action(SlateNotificationWindow *window, const char *label,
                                         const char *key, GCallback cb);
 
-void sol_notification_window_clear_actions(SolNotificationWindow *window);
+void slate_notification_window_clear_actions(SlateNotificationWindow *window);
 
-void sol_notification_window_set_hints(SolNotificationWindow *window, GHashTable *hints);
+void slate_notification_window_set_hints(SlateNotificationWindow *window, GHashTable *hints);
 
 /*
  * Editor modelines  -  https://www.wireshark.org/tools/modelines.html
