@@ -7,7 +7,7 @@
     <property name="can_focus">False</property>
     <property name="icon_name">window-close-symbolic</property>
   </object>
-  <object class="GtkWindow" id="SolNotificationWindow">
+  <object class="GtkWindow" id="SlateNotificationWindow">
     <property name="can_focus">False</property>
     <property name="type">popup</property>
     <property name="resizable">False</property>
@@ -113,7 +113,7 @@
               <placeholder/>
             </child>
             <style>
-              <class name="sol-notification"/>
+              <class name="slate-notification"/>
             </style>
           </object>
           <packing>
@@ -155,7 +155,7 @@
       </object>
     </child>
     <style>
-      <class name="sol-notification-window"/>
+      <class name="slate-notification-window"/>
     </style>
   </object>
 </interface>

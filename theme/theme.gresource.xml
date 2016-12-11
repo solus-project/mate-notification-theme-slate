@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
-        <gresource prefix="/com/solus-project/mate-notification-daemon-theme-solus">
+        <gresource prefix="/com/solus-project/mate-notification-daemon-theme-slate">
                 <file preprocess="xml-stripblanks">notification.ui</file>
                 <file>3.18/theme.css</file>
                 <file>3.18/theme_hc.css</file>
