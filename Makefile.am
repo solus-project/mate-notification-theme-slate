@@ -38,40 +38,40 @@ AM_CFLAGS = \
 
 
 # Mainly to avoid compiler warnings.
-noinst_LTLIBRARIES = libsolus-mate-theme-assets.la
+noinst_LTLIBRARIES = libslate-mate-theme-assets.la
 
-libsolus_mate_theme_assets_la_SOURCES = \
+libslate_mate_theme_assets_la_SOURCES = \
 	theme-resources.h		\
 	theme-resources.c
 
-libsolus_mate_theme_assets_la_CFLAGS = \
+libslate_mate_theme_assets_la_CFLAGS = \
 	$(AM_CFLAGS)	 \
 	$(THEME_CFLAGS)	\
 	-Wno-pedantic
 
-libsolus_mate_theme_assets_la_LIBADD = \
+libslate_mate_theme_assets_la_LIBADD = \
 	$(THEME_LIBS)
 
 # Main engine
-engine_LTLIBRARIES = libsolus-mate-theme.la
+engine_LTLIBRARIES = libslate-mate-theme.la
 enginedir = $(libdir)/mate-notification-daemon/engines
 
-libsolus_mate_theme_la_SOURCES =	\
+libslate_mate_theme_la_SOURCES =	\
 	src/engine-api.h		\
 	src/engine.c			\
 	src/notification-window.h	\
 	src/notification-window.c	\
 	src/util.h
 
-libsolus_mate_theme_la_CFLAGS = \
+libslate_mate_theme_la_CFLAGS = \
 	$(AM_CFLAGS)	 \
 	$(THEME_CFLAGS)
 
-libsolus_mate_theme_la_LIBADD = \
-	libsolus-mate-theme-assets.la \
+libslate_mate_theme_la_LIBADD = \
+	libslate-mate-theme-assets.la \
 	$(THEME_LIBS)
 
-libsolus_mate_theme_la_LDFLAGS = 	\
+libslate_mate_theme_la_LDFLAGS = 	\
 	-module 		 	\
 	-avoid-version	 	\
 	-fvisibility=hidden

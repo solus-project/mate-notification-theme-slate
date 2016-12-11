@@ -1,4 +1,4 @@
-AC_INIT([mate-notification-theme-solus], 3, [ikey@solus-project.com], [mate-notification-theme-solus], [https://github.com/solus-project/mate-notification-theme-solus/issues])
+AC_INIT([mate-notification-theme-slate], 3, [ikey@solus-project.com], [mate-notification-theme-slate], [https://github.com/solus-project/mate-notification-theme-slate/issues])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([-Wno-portability no-dist-gzip dist-xz foreign subdir-objects])
 AC_PROG_CC
@@ -25,7 +25,7 @@ AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 AC_OUTPUT
 
 AC_MSG_RESULT([
-        mate-notification-theme-solus $VERSION
+        mate-notification-theme-slate $VERSION
         ========
 
         prefix:                 ${prefix}
