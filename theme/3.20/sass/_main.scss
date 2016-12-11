@@ -108,12 +108,12 @@ $asset_suffix: if($variant == 'default', '', '-hc');
 }
 
 // Notifications
-.sol-notification-window {
+.slate-notification-window {
     background: none;
     border-radius: 1px;
 }
 
-.sol-notification {
+.slate-notification {
     &.background {
         border-radius: 1px;
     }
