@@ -1,4 +1,4 @@
-AC_INIT([mate-notification-theme-slate], 3, [ikey@solus-project.com], [mate-notification-theme-slate], [https://github.com/solus-project/mate-notification-theme-slate/issues])
+AC_INIT([mate-notification-theme-slate], 4, [ikey@solus-project.com], [mate-notification-theme-slate], [https://github.com/solus-project/mate-notification-theme-slate/issues])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([-Wno-portability no-dist-gzip dist-xz foreign subdir-objects])
 AC_PROG_CC
