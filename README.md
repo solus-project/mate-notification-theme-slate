@@ -1,12 +1,17 @@
 mate-notification-theme-slate
 =============================
 
-A MATE Notification Daemon theme, emulating the Arc-styled Budgie notifications
-of Solus. Style credit belongs solely with [horst3180](https://github.com/horst3180/arc-theme) for his design work and the
+A CSS-backed notification theme for the MATE Desktop.
+
+### Arc Styling
+
+The fallback styling for this plugin emulates the Arc-styled Budgie notifications. Style credit belongs solely with [horst3180](https://github.com/horst3180/arc-theme) for his design work and the
 implementation within [Budgie](https://github.com/solus-project/budgie-desktop).
 
-This is a re-implementation for MATE, borrowing a subset of the Budgie theme,
-and providing a clean + stable theme engine.
+### Themeable
+
+This plugin supports CSS styling, and now has support within the [Adapta](https://github.com/adapta-project/adapta-gtk-theme) GTK theme, so
+can be extended to suit any style.
 
 mate-notification-theme-slate is a [Solus project](https://solus-project.com/)
 
@@ -43,19 +48,6 @@ Now build it:
     make -j$(($(getconf _NPROCESSORS_ONLN)+1))
     sudo make install
 ```
-
-Future
-------
-
-We'd like to see `mate-notification-daemon` enhanced, so we'll work with upstream
-to add new features. Specifically, this theme has built-in handling for `action-icons`
-functionality, but we need to send a pull request upstream to enable all of the
-existing themes to support this, and to broadcast the functionality in the `d-bus`
-service:
-
-**Update**:
-
- - https://github.com/mate-desktop/mate-notification-daemon/pull/114
 
 License
 -------
