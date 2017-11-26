@@ -66,6 +66,9 @@ static void slate_set_theme(const char *theme_portion)
         gchar *uri = NULL;
         GtkCssProvider *prov = NULL;
         GdkScreen *screen = NULL;
+        GtkSettings *settings = NULL;
+        const char *cur_theme = NULL;
+        guint priority = GTK_STYLE_PROVIDER_PRIORITY_FALLBACK;
 
         uri = slate_theme_form_theme_path(theme_portion);
         file = g_file_new_for_uri(uri);
@@ -80,6 +83,13 @@ static void slate_set_theme(const char *theme_portion)
         }
         screen = gdk_screen_get_default();
 
+        settings = gtk_settings_get_default();
+        g_object_get(settings, "gtk-theme-name", &cur_theme, NULL);
+
+        if (cur_theme && g_str_has_prefix(cur_theme, "Arc")) {
+                priority = GTK_STYLE_PROVIDER_PRIORITY_APPLICATION;
+        }
+
         /* Revert the previous style provider */
         if (_theme_style_provider != NULL) {
                 gtk_style_context_remove_provider_for_screen(screen,
@@ -88,9 +98,7 @@ static void slate_set_theme(const char *theme_portion)
                 _theme_style_provider = NULL;
         }
 
-        gtk_style_context_add_provider_for_screen(screen,
-                                                  GTK_STYLE_PROVIDER(prov),
-                                                  GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
+        gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(prov), priority);
         _theme_style_provider = prov;
 end:
         g_free(uri);
