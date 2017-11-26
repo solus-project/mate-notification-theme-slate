@@ -52,6 +52,6 @@ Now build it:
 License
 -------
 
-Copyright © 2016 Ikey Doherty <ikey@solus-project.com>, Solus Project
+Copyright © 2016-2017 Ikey Doherty <ikey@solus-project.com>, Solus Project
 
 mate-notification-theme-slate is available under the terms of the `LGPL-2.1` license
