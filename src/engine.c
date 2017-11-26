@@ -90,7 +90,7 @@ static void slate_set_theme(const char *theme_portion)
 
         gtk_style_context_add_provider_for_screen(screen,
                                                   GTK_STYLE_PROVIDER(prov),
-                                                  GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+                                                  GTK_STYLE_PROVIDER_PRIORITY_FALLBACK);
         _theme_style_provider = prov;
 end:
         g_free(uri);
