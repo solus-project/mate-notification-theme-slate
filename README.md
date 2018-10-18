@@ -13,9 +13,9 @@ implementation within [Budgie](https://github.com/solus-project/budgie-desktop).
 This plugin supports CSS styling, and now has support within the [Adapta](https://github.com/adapta-project/adapta-gtk-theme) GTK theme, so
 can be extended to suit any style.
 
-mate-notification-theme-slate is a [Solus project](https://solus-project.com/)
+mate-notification-theme-slate is a [Solus project](https://getsol.us/)
 
-![logo](https://build.solus-project.com/logo.png)
+![logo](https://build.getsol.us/logo.png)
 
 ![screenshot](https://raw.githubusercontent.com/solus-project/mate-notification-theme-slate/master/landing.png)
 
