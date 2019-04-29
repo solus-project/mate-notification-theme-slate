@@ -1,4 +1,4 @@
-mate-notification-theme-slate
+mate-notification-theme-slate 
 =============================
 
 A CSS-backed notification theme for the MATE Desktop.
